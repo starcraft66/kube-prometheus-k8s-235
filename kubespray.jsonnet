@@ -1,6 +1,7 @@
 local kp =
   (import 'kube-prometheus/kube-prometheus.libsonnet') +
   (import 'kube-prometheus/kube-prometheus-kubespray.libsonnet') +
+  (import 'elasticsearch-mixin/mixin.libsonnet') +
   // Uncomment the following imports to enable its patches
   // (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') +
   // (import 'kube-prometheus/kube-prometheus-managed-cluster.libsonnet') +

@@ -95,6 +95,16 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/lukas-vlcek/elasticsearch-mixin.git",
+          "subdir": ""
+        }
+      },
+      "version": "56b30c3098558953761dc8881bf14431086066ea",
+      "sum": "9u4duVR6aKeO95FjLFrUTmMy8uAQepikwkcUgu5FZ9E="
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/prometheus-operator/kube-prometheus.git",
           "subdir": "jsonnet/kube-prometheus"
         }
