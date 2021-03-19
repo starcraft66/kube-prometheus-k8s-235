@@ -4,6 +4,16 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/amoghk/coredns-mixin.git",
+          "subdir": ""
+        }
+      },
+      "version": "d655e6141e09acef6d65e3df8dafb4a01ef5422b",
+      "sum": "/PhiOkflYwk9bz2wRa8JPNumkGhfFvivycTYdgOvQTI="
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/brancz/kubernetes-grafana.git",
           "subdir": "grafana"
         }
@@ -38,7 +48,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "0bd27867f8952f6662d2fadd469a99e88f37dfcb",
+      "version": "faa0cb85a83d6955a878c5ca7cacffd484265a79",
       "sum": "GRf2GvwEU4jhXV+JOonXSZ4wdDv8mnHBPCQ6TUVd+g8="
     },
     {
@@ -69,7 +79,7 @@
           "subdir": "lib/promgrafonnet"
         }
       },
-      "version": "47cc48fe091adee2bde95eac55d7936f64c6bf63",
+      "version": "9c862725037deffd9b240072e3db8c9b32e4d84c",
       "sum": "zv7hXGui6BfHzE9wPatHI/AGZa4A2WKo6pq7ZdqBsps="
     },
     {
@@ -142,6 +152,16 @@
       "version": "193ebba04d1e70d971047e983a0b489112610460",
       "sum": "QcftU7gjCQyj7B6M4YJeCAeaPd0kwxd4J4rolo7AnLE=",
       "name": "alertmanager"
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/prometheus/mysqld_exporter.git",
+          "subdir": "mysqld-mixin"
+        }
+      },
+      "version": "e513dea25b15a875f971ad7b6537e247d5dfabe6",
+      "sum": "6lrMctTxys5jQhSR1AoNOmoqQ7fgr+76FmqEgOhV4mc="
     },
     {
       "source": {
