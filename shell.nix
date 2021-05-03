@@ -4,7 +4,7 @@
 with pkgs;
 mkShell rec {
   buildInputs = [
-    jsonnet
+    go-jsonnet
     jsonnet-bundler
     gojsontoyaml
   ];
