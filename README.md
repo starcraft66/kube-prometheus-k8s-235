@@ -7,4 +7,4 @@ Kubernetes cluster.
 
 ## Building
 
-Simply run `nix-shell --run './build.sh kubespray.jsonnet'
+Simply run `nix-shell --run './build.sh kubespray.jsonnet'`
