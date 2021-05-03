@@ -48,13 +48,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: manifests
+      - name: Zip manifests
+        run: zip -r manifests.zip kustomization.yaml LICENSE manifests
       - name: Release
+        if: ${{ success() }}
         uses: softprops/action-gh-release@v1
         with:
-          fail_on_unmatched_files: true
-          files: |
-            LICENSE
-            kustomization.yaml
-            manifests/*
+          # Not supported yet
+          # fail_on_unmatched_files: true
+          files: manifests.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
