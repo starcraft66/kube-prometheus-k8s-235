@@ -15,7 +15,7 @@ local ingress(name, namespace, hosts, rules, authenticated) = {
     ingressClassName: 'traefik',
     tls: [{
       hosts: hosts,
-      secretName: std.strReplace(domain, ".", "-") + '-tls',
+      secretName: std.strReplace(domain, '.', '-') + '-tls',
     }],
     rules: rules,
   },
@@ -121,7 +121,7 @@ local alertmanagerDiscord = {
         },
       },
       policyTypes: [
-          "Ingress"
+        'Ingress',
       ],
       ingress: [
         {
@@ -132,16 +132,16 @@ local alertmanagerDiscord = {
                   app: 'alertmanager',
                 },
               },
-            }
+            },
           ],
           ports: [
             {
-              protocol: "TCP",
-              port: 9094
+              protocol: 'TCP',
+              port: 9094,
             },
-          ]
-        }
-      ]
+          ],
+        },
+      ],
     },
   },
 };
@@ -186,7 +186,7 @@ local matrixAlertmanager = {
                 },
               }, {
                 name: 'APP_PORT',
-                value: "9094",
+                value: '9094',
               }, {
                 name: 'MATRIX_HOMESERVER_URL',
                 value: 'https://nerdsin.space',
@@ -199,7 +199,7 @@ local matrixAlertmanager = {
               }, {
                 name: 'APP_ALERTMANAGER_SECRET',
                 value: 'whybother',
-              },],
+              }],
               resources: {
                 requests: {
                   cpu: '50m',
@@ -244,7 +244,7 @@ local matrixAlertmanager = {
         },
       },
       policyTypes: [
-          "Ingress"
+        'Ingress',
       ],
       ingress: [
         {
@@ -255,16 +255,16 @@ local matrixAlertmanager = {
                   app: 'alertmanager',
                 },
               },
-            }
+            },
           ],
           ports: [
             {
-              protocol: "TCP",
-              port: 9094
+              protocol: 'TCP',
+              port: 9094,
             },
-          ]
-        }
-      ]
+          ],
+        },
+      ],
     },
   },
 };
@@ -363,7 +363,7 @@ local kp =
         // 'KubeMemoryOvercommit',
         // Causing too much noise
         'CPUThrottlingHigh',
-        ]),
+      ]),
     },
 
     prometheus+:: {
