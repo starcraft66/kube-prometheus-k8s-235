@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
-# This script uses arg $1 (name of *.jsonnet file to use) to generate the manifests/*.yaml files.
-
 set -e
-set -x
 # only exit with zero if all commands of the pipeline exit successfully
 set -o pipefail
+
+if [[ -n "${DEBUG}" ]]; then
+    set -x
+fi
+
+function usage() {
+    echo -n "Usage: $(basename "$0")
+Render yaml manifests from jsonnet
+"
+}
 
 # Make sure vendor folder is initialized
 jb install
@@ -15,7 +22,7 @@ rm -rf manifests
 mkdir -p manifests/setup
 
 # Calling gojsontoyaml is optional, but we would like to generate yaml, not json
-jsonnet -J vendor -m manifests "${1-example.jsonnet}" | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml' -- {}
+jsonnet -J vendor -m manifests kube-prometheus.jsonnet | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml' -- {}
 
 # Make sure to remove json files
 find manifests -type f ! -name '*.yaml' -delete

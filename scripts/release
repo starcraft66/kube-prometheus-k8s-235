@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+set -e
+# only exit with zero if all commands of the pipeline exit successfully
+set -o pipefail
+
+if [[ -n "${DEBUG}" ]]; then
+    set -x
+fi
+
+function usage() {
+    echo -n "Usage: $(basename "$0") <version>
+Render manifests and cut a release
+Arguments:
+    <version>     Version number of the release to cut
+"
+}
+
+if [ ! $# -eq 1 ]; then
+    usage
+    exit 1
+fi
+
+RELEASE=$1
+
+# Make sure vendor folder is initialized
+jb update
+jb install
+
+# Make sure to start with a clean 'manifests' dir
+rm -rf manifests
+mkdir -p manifests/setup
+
+# Calling gojsontoyaml is optional, but we would like to generate yaml, not json
+jsonnet -J vendor -m manifests kube-prometheus.jsonnet | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml' -- {}
+
+# Make sure to remove json files
+find manifests -type f ! -name '*.yaml' -delete
+rm -f kustomization
+
+git add jsonnetfile.json jsonnetfile.json.lock kustomization.yaml manifests
+git commit -m "Release v$RELEASE"
+git checkout -b release/$RELEASE
+git tag -s v$RELEASE -m "Release v$RELEASE"
+git push
+pit push --tags
+
+# Return to master
+git checkout master

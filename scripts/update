@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+# only exit with zero if all commands of the pipeline exit successfully
+set -o pipefail
+
+if [[ -n "${DEBUG}" ]]; then
+    set -x
+fi
+
+function usage() {
+    echo -n "Usage: $(basename "$0")
+Update jsonnet dependencies
+"
+}
+
+echo $(pwd)
+
+if [ ! $# -eq 0 ]; then
+    usage
+    exit 1
+fi
+
+jb update
