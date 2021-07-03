@@ -111,7 +111,7 @@ local alertmanagerDiscord = {
     apiVersion: 'networking.k8s.io/v1',
     kind: 'NetworkPolicy',
     metadata: {
-      name: 'matrix-alertmanager',
+      name: 'alertmanager-discord',
       namespace: 'monitoring',
     },
     spec: {
