@@ -282,6 +282,9 @@ local kp =
   // (import 'kube-prometheus/addons/external-metrics.libsonnet') +
   {
     values+:: {
+      kubePrometheus+: {
+        platform: 'kubespray',
+      },
       common+: {
         namespace: 'monitoring',
       },
