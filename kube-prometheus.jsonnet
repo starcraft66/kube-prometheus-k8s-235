@@ -483,6 +483,7 @@ local modifiedGrafana = kp.grafana {
     spec: {
       accessModes: ['ReadWriteOnce'],
       resources: { requests: { storage: '2Gi' } },
+      storageClassName: 'freenas-nfs-csi',
     },
   },
 };
