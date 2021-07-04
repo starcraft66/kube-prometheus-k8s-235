@@ -407,7 +407,7 @@ local kp =
       }], false),
       backend: ingress('backend', $.values.common.namespace, ['prometheus.monitoring.' + domain, 'alertmanager.monitoring.' + domain, 'monitoring.' + domain], [
         {
-          host: 'alertmanager.' + domain,
+          host: 'alertmanager.monitoring' + domain,
           http: {
             paths: [{
               path: '/',
@@ -424,7 +424,7 @@ local kp =
           },
         },
         {
-          host: 'prometheus.' + domain,
+          host: 'prometheus.monitoring' + domain,
           http: {
             paths: [{
               path: '/',
