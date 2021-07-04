@@ -303,9 +303,9 @@ local kp =
               allow_sign_up: true,
               scopes: 'read_api',
               auth_url: 'https://git.tdude.co/oauth/authorize',
-              token_url: 'https://gitlab.com/oauth/token',
-              api_url: 'https://gitlab.com/api/v4',
-              allowed_groups: 'otakuthon',
+              token_url: 'https://git.tdude.co/oauth/token',
+              api_url: 'https://git.tdude.co/api/v4',
+              allowed_groups: 'tdude',
             },
             server+: {
               domain: 'monitoring.' + domain,
