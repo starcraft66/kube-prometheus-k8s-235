@@ -464,7 +464,7 @@ local modifiedGrafana = kp.grafana {
             if volume.name == 'grafana-config'
             then {
               name: volume.name,
-              persistentVolumeClaim: { claimName: 'grafana-storage', readOnly: false },
+              persistentVolumeClaim: { claimName: 'grafana-config', readOnly: false },
             }
             else volume
             for volume in g.deployment.spec.template.spec.volumes
@@ -477,7 +477,7 @@ local modifiedGrafana = kp.grafana {
     apiVersion: 'v1',
     kind: 'PersistentVolumeClaim',
     metadata: {
-      name: 'grafana-storage',
+      name: 'grafana-config',
       namespace: kp.values.common.namespace,
     },
     spec: {
