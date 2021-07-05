@@ -368,6 +368,7 @@ local kp =
                 alertname: Watchdog
               receiver: 'null'
             - receiver: 'discord-notifications'
+              continue: true
             - receiver: 'matrix-notifications'
             
           receivers:
