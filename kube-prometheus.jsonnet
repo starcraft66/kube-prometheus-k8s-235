@@ -269,9 +269,34 @@ local matrixAlertmanager = {
   },
 };
 
+local addMixin = (import 'kube-prometheus/lib/mixin.libsonnet');
+local corednsMixin = addMixin({
+  name: 'coredns',
+  mixin: (import 'coredns-mixin/mixin.libsonnet') + {
+    _config+: {},  // mixin configuration object
+  },
+});
+/*local mysqldMixin = addMixin({
+  name: 'mysqld',
+  mixin: (import 'mysqld-mixin/mixin.libsonnet') + {
+    _config+: {},  // mixin configuration object
+  },
+});
+local postgresMixin = addMixin({
+  name: 'postgres',
+  mixin: (import 'postgres_mixin/mixin.libsonnet') + {
+    _config+: {},  // mixin configuration object
+  },
+});*/
+local elasticsearchMixin = addMixin({
+  name: 'elasticsearch',
+  mixin: (import 'elasticsearch-mixin/mixin.libsonnet') + {
+    _config+: {},  // mixin configuration object
+  },
+});
+
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
-  (import 'coredns-mixin/mixin.libsonnet') +
   // Uncomment the following imports to enable its patches
   // (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
   (import 'kube-prometheus/addons/all-namespaces.libsonnet') +
@@ -290,6 +315,7 @@ local kp =
       },
       grafana+: {
         plugins: ['grafana-piechart-panel'],
+        dashboards+: corednsMixin.grafanaDashboards /*mysqldMixin.dashboards, postgresMixin.dashboards,*/ + elasticsearchMixin.grafanaDashboards,
         config+: {
           sections+: {
             analytics+: {
@@ -508,7 +534,11 @@ local manifests =
   { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
   { ['alertmanager-discord-' + name]: alertmanagerDiscord[name] for name in std.objectFields(alertmanagerDiscord) } +
   { ['matrix-alertmanager-' + name]: matrixAlertmanager[name] for name in std.objectFields(matrixAlertmanager) } +
-  { [name + '-ingress']: kp.ingress[name] for name in std.objectFields(kp.ingress) };
+  { [name + '-ingress']: kp.ingress[name] for name in std.objectFields(kp.ingress) }
+  { 'coredns-mixin-prometheus-rules': corednsMixin.prometheusRules }
+  //{ 'external-mixins/mysqld-mixin-prometheus-rules': mysqldMixin.prometheusRules }
+  //{ 'external-mixins/postgres-mixin-prometheus-rules': postgresMixin.prometheusRules }
+  { 'elasticsearch-mixin-prometheus-rules': elasticsearchMixin.prometheusRules };
 
 local kustomizationResourceFile(name) = './manifests/' + name + '.yaml';
 local kustomization = {
