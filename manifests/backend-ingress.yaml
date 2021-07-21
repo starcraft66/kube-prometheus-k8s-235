@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-  - host: alertmanager.tdude.co
+  - host: alertmanager.monitoring.tdude.co
     http:
       paths:
       - backend:
@@ -20,7 +20,7 @@ spec:
               name: web
         path: /
         pathType: Prefix
-  - host: prometheus.tdude.co
+  - host: prometheus.monitoring.tdude.co
     http:
       paths:
       - backend:
