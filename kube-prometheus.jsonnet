@@ -414,6 +414,9 @@ local kp =
       },
     },
 
+    prometheusAlerts+:: corednsMixin.prometheusAlerts +
+      elasticsearchMixin.prometheusAlerts,
+
     ingress+:: {
       grafana: ingress('grafana', $.values.common.namespace, [], [{
         host: 'monitoring.' + domain,
@@ -535,8 +538,7 @@ local manifests =
   { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
   { ['alertmanager-discord-' + name]: alertmanagerDiscord[name] for name in std.objectFields(alertmanagerDiscord) } +
   { ['matrix-alertmanager-' + name]: matrixAlertmanager[name] for name in std.objectFields(matrixAlertmanager) } +
-  { [name + '-ingress']: kp.ingress[name] for name in std.objectFields(kp.ingress) }
-  { 'coredns-mixin-prometheus-rules': corednsMixin.prometheusRules }
+  { [name + '-ingress']: kp.ingress[name] for name in std.objectFields(kp.ingress) } +
   //{ 'external-mixins/mysqld-mixin-prometheus-rules': mysqldMixin.prometheusRules }
   //{ 'external-mixins/postgres-mixin-prometheus-rules': postgresMixin.prometheusRules }
   { 'elasticsearch-mixin-prometheus-rules': elasticsearchMixin.prometheusRules };
