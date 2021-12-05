@@ -333,6 +333,7 @@ local kp =
               token_url: 'https://git.tdude.co/oauth/token',
               api_url: 'https://git.tdude.co/api/v4',
               allowed_groups: 'tdude',
+              role_attribution_path: @'is_admin && ''Admin'' || ''Viewer'''
             },
             server+: {
               domain: 'monitoring.' + domain,
