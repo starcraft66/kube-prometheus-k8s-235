@@ -44,7 +44,7 @@
           "subdir": "mysqld-mixin"
         }
       },
-      "version": "master"
+      "version": "main"
     }
   ],
   "legacyImports": true
