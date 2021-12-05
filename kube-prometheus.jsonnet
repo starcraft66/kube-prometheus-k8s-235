@@ -489,10 +489,10 @@ local modifiedGrafana = kp.grafana {
             for container in g.deployment.spec.template.spec.containers
           ],
           volumes: [
-            if volume.name == 'grafana-config'
+            if std.member([ 'grafana-config', 'grafana-storage', ], volume.name)
             then {
               name: volume.name,
-              persistentVolumeClaim: { claimName: 'grafana-config', readOnly: false },
+              persistentVolumeClaim: { claimName: volume.name, readOnly: false },
             }
             else volume
             for volume in g.deployment.spec.template.spec.volumes
