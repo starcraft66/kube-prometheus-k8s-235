@@ -398,6 +398,7 @@ local kp =
     prometheus+:: {
       prometheus+: {
         spec+: {
+          externalUrl: 'https://prometheus.monitoring.' + domain,
           retention: '180d',
           storage: {
             volumeClaimTemplate: {
