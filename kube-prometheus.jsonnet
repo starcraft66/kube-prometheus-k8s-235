@@ -501,11 +501,11 @@ local modifiedGrafana = kp.grafana {
       },
     },
   },
-  pvc: std.map( function(name) {
+  pvc: {
     apiVersion: 'v1',
     kind: 'PersistentVolumeClaim',
     metadata: {
-      name: name,
+      name: 'grafana-config',
       namespace: kp.values.common.namespace,
     },
     spec: {
@@ -513,7 +513,7 @@ local modifiedGrafana = kp.grafana {
       resources: { requests: { storage: '2Gi' } },
       storageClassName: 'freenas-nfs-csi',
     },
-  }, [ 'grafana-config', 'grafana-storage', ]),
+  },
 };
 
 local manifests =
