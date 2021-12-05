@@ -488,30 +488,8 @@ local modifiedGrafana = kp.grafana {
              })
             for container in g.deployment.spec.template.spec.containers
           ],
-          volumes: [
-            if volume.name == 'grafana-config'
-            then {
-              name: volume.name,
-              persistentVolumeClaim: { claimName: 'grafana-config', readOnly: false },
-            }
-            else volume
-            for volume in g.deployment.spec.template.spec.volumes
-          ],
         },
       },
-    },
-  },
-  pvc: {
-    apiVersion: 'v1',
-    kind: 'PersistentVolumeClaim',
-    metadata: {
-      name: 'grafana-config',
-      namespace: kp.values.common.namespace,
-    },
-    spec: {
-      accessModes: ['ReadWriteOnce'],
-      resources: { requests: { storage: '2Gi' } },
-      storageClassName: 'freenas-nfs-csi',
     },
   },
 };
