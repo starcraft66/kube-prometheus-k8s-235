@@ -376,7 +376,7 @@ local kp =
                 - url: 'http://alertmanager-discord:9094'
             - name: 'matrix-notifications'
               webhook_configs:
-                - url: 'http://matrix-alertmanager:9094/alerts?secret=whybother'
+                - url: 'http://matrix-alertmanager:3000/alerts?secret=whybother'
         |||,
       },
     },
