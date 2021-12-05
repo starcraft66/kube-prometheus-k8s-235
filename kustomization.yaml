@@ -37,8 +37,6 @@ resources:
 - ./manifests/kube-state-metrics-service.yaml
 - ./manifests/kube-state-metrics-serviceAccount.yaml
 - ./manifests/kube-state-metrics-serviceMonitor.yaml
-- ./manifests/kubernetes-kubeControllerManagerPrometheusDiscoveryService.yaml
-- ./manifests/kubernetes-kubeSchedulerPrometheusDiscoveryService.yaml
 - ./manifests/kubernetes-prometheusRule.yaml
 - ./manifests/kubernetes-serviceMonitorApiserver.yaml
 - ./manifests/kubernetes-serviceMonitorCoreDNS.yaml
@@ -75,9 +73,7 @@ resources:
 - ./manifests/prometheus-prometheus.yaml
 - ./manifests/prometheus-prometheusRule.yaml
 - ./manifests/prometheus-roleBindingConfig.yaml
-- ./manifests/prometheus-roleBindingSpecificNamespaces.yaml
 - ./manifests/prometheus-roleConfig.yaml
-- ./manifests/prometheus-roleSpecificNamespaces.yaml
 - ./manifests/prometheus-service.yaml
 - ./manifests/prometheus-serviceAccount.yaml
 - ./manifests/prometheus-serviceMonitor.yaml
