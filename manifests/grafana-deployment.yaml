@@ -20,7 +20,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-config: 63639767eb72799de0a7e94d1cad9381
+        checksum/grafana-config: c80290fa7e1d97493a4bec87580aa04e
         checksum/grafana-datasources: fbf9c3b28f5667257167c2cec0ac311a
       labels:
         app.kubernetes.io/component: grafana
@@ -147,10 +147,8 @@ spec:
         runAsUser: 65534
       serviceAccountName: grafana
       volumes:
-      - name: grafana-storage
-        persistentVolumeClaim:
-          claimName: grafana-storage
-          readOnly: false
+      - emptyDir: {}
+        name: grafana-storage
       - name: grafana-datasources
         secret:
           secretName: grafana-datasources
@@ -233,6 +231,5 @@ spec:
           name: grafana-dashboard-workload-total
         name: grafana-dashboard-workload-total
       - name: grafana-config
-        persistentVolumeClaim:
-          claimName: grafana-config
-          readOnly: false
+        secret:
+          secretName: grafana-config

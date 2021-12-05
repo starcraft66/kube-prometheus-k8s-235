@@ -26,7 +26,6 @@ resources:
 - ./manifests/grafana-dashboardSources.yaml
 - ./manifests/grafana-deployment.yaml
 - ./manifests/grafana-ingress.yaml
-- ./manifests/grafana-pvc.yaml
 - ./manifests/grafana-service.yaml
 - ./manifests/grafana-serviceAccount.yaml
 - ./manifests/grafana-serviceMonitor.yaml
