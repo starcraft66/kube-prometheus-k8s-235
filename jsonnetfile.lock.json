@@ -28,7 +28,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "e84c61104c0d7152f4e2864c887574c163efad4f",
+      "version": "7291ed3c4ae7ba61df72e7b610d6c351f995a3db",
       "sum": "W/Azptf1PoqjyMwJON96UY69MFugDA4IAYiKURscryc="
     },
     {
@@ -48,7 +48,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "9927be87af4be9ff6b009e4503868b1b5493011b",
+      "version": "b46355107c024e0aa4932adadd939294c3b8260d",
       "sum": "0KkygBQd/AFzUvVzezE4qF/uDYgrwUXVpZfINBti0oc="
     },
     {
@@ -58,8 +58,8 @@
           "subdir": ""
         }
       },
-      "version": "10bb7c344cea4c9bf5dcf3d4d562aef55b77c49c",
-      "sum": "IuBmSSNjmazPgFW7w1BJGv4YifK9pxUIzNPJ0TCkWK8="
+      "version": "fb9d8ed4bc4a3d6efac525f72e8a0d2c583a0fe2",
+      "sum": "xjKkdp+5fkekCNBUIgZCHTRmVdUEmQNFKslrL2Ho8gs="
     },
     {
       "source": {
@@ -68,7 +68,7 @@
           "subdir": "lib/promgrafonnet"
         }
       },
-      "version": "9821d07e94e9a9916575a234fb699ae3331fa939",
+      "version": "3346c8cbcc1660caeddf2ffc9443dabe583e1a35",
       "sum": "zv7hXGui6BfHzE9wPatHI/AGZa4A2WKo6pq7ZdqBsps="
     },
     {
@@ -108,7 +108,7 @@
           "subdir": "postgres_mixin"
         }
       },
-      "version": "0977e96b56eecfbb2d01afc92269b7a25be93670",
+      "version": "8b79a99cc4b0924e30c257869d91e8ef4bac24be",
       "sum": "0Kz185DwXwm6gX/G9/dlJRM+YpdXgW+db+tLyynjNQ0="
     },
     {
@@ -118,7 +118,7 @@
           "subdir": "jsonnet/kube-prometheus"
         }
       },
-      "version": "ff1bdd2238c9545323ecf9654fd148e9ec1dcfd1",
+      "version": "c8db3c85db6e13b94726b7c5d630a6ebe7038cf9",
       "sum": "7DfVEg2kDzIQPgxTThnjQ4S2ZksrF0hkNLysXP6Wv24="
     },
     {
@@ -160,8 +160,8 @@
           "subdir": "mysqld-mixin"
         }
       },
-      "version": "492c004fad8cb2dd8abd51b2bd46b4c926330f21",
-      "sum": "YfTy88SR14hTkdI9yeybS8uzGynfcjoUrN8BCoFnXbc="
+      "version": "1f5a0d1c552b20305d7217aa355a9ccddd362d6f",
+      "sum": "0DlSTrzHW1CSts0diGgQ03WR6NCElXBuQZLgNTGQ12I="
     },
     {
       "source": {
