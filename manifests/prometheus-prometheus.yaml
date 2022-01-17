@@ -3,10 +3,10 @@ kind: Prometheus
 metadata:
   labels:
     app.kubernetes.io/component: prometheus
+    app.kubernetes.io/instance: k8s
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.29.1
-    prometheus: k8s
+    app.kubernetes.io/version: 2.32.1
   name: k8s
   namespace: monitoring
 spec:
@@ -19,15 +19,16 @@ spec:
   enableFeatures: []
   externalLabels: {}
   externalUrl: https://prometheus.monitoring.tdude.co
-  image: quay.io/prometheus/prometheus:v2.29.1
+  image: quay.io/prometheus/prometheus:v2.32.1
   nodeSelector:
     kubernetes.io/os: linux
   podMetadata:
     labels:
       app.kubernetes.io/component: prometheus
+      app.kubernetes.io/instance: k8s
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 2.29.1
+      app.kubernetes.io/version: 2.32.1
   podMonitorNamespaceSelector: {}
   podMonitorSelector: {}
   probeNamespaceSelector: {}
@@ -56,4 +57,4 @@ spec:
         resources:
           requests:
             storage: 50Gi
-  version: 2.29.1
+  version: 2.32.1
