@@ -129,7 +129,7 @@ local alertmanagerDiscord = {
             {
               podSelector: {
                 matchLabels: {
-                  app: 'alertmanager',
+                  'app.kubernetes.io/name': 'alertmanager',
                 },
               },
             },
@@ -252,7 +252,7 @@ local matrixAlertmanager = {
             {
               podSelector: {
                 matchLabels: {
-                  app: 'alertmanager',
+                  'app.kubernetes.io/name': 'alertmanager',
                 },
               },
             },
