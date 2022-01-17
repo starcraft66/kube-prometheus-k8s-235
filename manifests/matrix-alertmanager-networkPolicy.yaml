@@ -8,7 +8,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          app: alertmanager
+          app.kubernetes.io/name: alertmanager
     ports:
     - port: 9094
       protocol: TCP
