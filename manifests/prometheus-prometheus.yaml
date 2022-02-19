@@ -56,5 +56,5 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 50Gi
+            storage: 100Gi
   version: 2.32.1
