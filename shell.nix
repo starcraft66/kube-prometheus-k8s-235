@@ -1,4 +1,4 @@
-{ pkgs ? import (builtins.fetchTarball "https://github.com/nixos/nixpkgs/archive/176690a7630f4ec253bba538fe24086750decc6e.tar.gz") { }
+{ pkgs ? import (builtins.fetchTarball "https://github.com/nixos/nixpkgs/archive/b66b39216b1fef2d8c33cc7a5c72d8da80b79970.tar.gz") { }
 }:
 
 with pkgs;
