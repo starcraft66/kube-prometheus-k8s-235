@@ -406,7 +406,7 @@ local kp =
               kind: 'PersistentVolumeClaim',
               spec: {
                 accessModes: ['ReadWriteOnce'],
-                resources: { requests: { storage: '50Gi' } },
+                resources: { requests: { storage: '100Gi' } },
               },
             },
           },
