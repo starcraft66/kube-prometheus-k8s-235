@@ -294,6 +294,12 @@ local elasticsearchMixin = addMixin({
     _config+: {},  // mixin configuration object
   },
 });
+local etcdMixin = addMixin({
+  name: 'etcd',
+  mixin: (import 'mixin/mixin.libsonnet') + {
+    _config+: {},  // mixin configuration object
+  },
+});
 
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
@@ -313,7 +319,7 @@ local kp =
       },
       grafana+: {
         plugins: ['grafana-piechart-panel'],
-        dashboards+: corednsMixin.grafanaDashboards /*mysqldMixin.dashboards, postgresMixin.dashboards,*/ + elasticsearchMixin.grafanaDashboards,
+        dashboards+: corednsMixin.grafanaDashboards /*mysqldMixin.dashboards, postgresMixin.dashboards,*/ + elasticsearchMixin.grafanaDashboards + etcdMixin.grafanaDashboards,
         config+: {
           sections+: {
             analytics+: {
@@ -412,10 +418,11 @@ local kp =
           },
         },
       },
+    prometheusAlerts+:: corednsMixin.prometheusAlerts +
+      elasticsearchMixin.prometheusAlerts +
+      etcdMixin.prometheusAlerts,
     },
 
-    prometheusAlerts+:: corednsMixin.prometheusAlerts +
-      elasticsearchMixin.prometheusAlerts,
 
     ingress+:: {
       grafana: ingress('grafana', $.values.common.namespace, [], [{
@@ -519,7 +526,8 @@ local manifests =
   { [name + '-ingress']: kp.ingress[name] for name in std.objectFields(kp.ingress) } +
   //{ 'external-mixins/mysqld-mixin-prometheus-rules': mysqldMixin.prometheusRules }
   //{ 'external-mixins/postgres-mixin-prometheus-rules': postgresMixin.prometheusRules }
-  { 'elasticsearch-mixin-prometheus-rules': elasticsearchMixin.prometheusRules };
+  { 'elasticsearch-mixin-prometheus-rules': elasticsearchMixin.prometheusRules }
+  { 'etcd-mixin-prometheus-rules': etcdMixin.prometheusRules };
 
 local kustomizationResourceFile(name) = './manifests/' + name + '.yaml';
 local kustomization = {
