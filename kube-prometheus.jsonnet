@@ -311,6 +311,7 @@ local kp =
   // (import 'kube-prometheus/addons/thanos-sidecar.libsonnet') +
   // (import 'kube-prometheus/addons/custom-metrics.libsonnet') +
   // (import 'kube-prometheus/addons/external-metrics.libsonnet') +
+  (import 'kube-prometheus/addons/pyrra.libsonnet') +
   {
     values+:: {
       common+: {
@@ -442,7 +443,24 @@ local kp =
           }],
         },
       }], false),
-      backend: ingress('backend', $.values.common.namespace, ['prometheus.monitoring.' + domain, 'alertmanager.monitoring.' + domain, 'monitoring.' + domain], [
+      backend: ingress('backend', $.values.common.namespace, ['pyrra.monitoring.' + domain, 'prometheus.monitoring.' + domain, 'alertmanager.monitoring.' + domain, 'monitoring.' + domain], [
+        {
+          host: 'pyrra.monitoring.' + domain,
+          http: {
+            paths: [{
+              path: '/',
+              pathType: 'Prefix',
+              backend: {
+                service: {
+                  name: 'pyrra-api',
+                  port: {
+                    name: 'http',
+                  },
+                },
+              },
+            }],
+          },
+        },
         {
           host: 'alertmanager.monitoring.' + domain,
           http: {
@@ -511,10 +529,12 @@ local manifests =
     ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
     for name in std.filter((function(name) name != 'serviceMonitor'), std.objectFields(kp.prometheusOperator))
   } +
+  { 'setup/pyrra-slo-CustomResourceDefinition': kp.pyrra.crd } +
   // serviceMonitor is separated so that it can be created after the CRDs are ready
   { 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
   { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
   { ['grafana-' + name]: modifiedGrafana[name] for name in std.objectFields(modifiedGrafana) } +
+  { ['pyrra-' + name]: kp.pyrra[name] for name in std.objectFields(kp.pyrra) if name != 'crd' } +
   { ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
   { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
   { ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) } +
