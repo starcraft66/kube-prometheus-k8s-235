@@ -10,6 +10,16 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
+  - host: pyrra.monitoring.tdude.co
+    http:
+      paths:
+      - backend:
+          service:
+            name: pyrra-api
+            port:
+              name: http
+        path: /
+        pathType: Prefix
   - host: alertmanager.monitoring.tdude.co
     http:
       paths:
@@ -32,6 +42,7 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
+    - pyrra.monitoring.tdude.co
     - prometheus.monitoring.tdude.co
     - alertmanager.monitoring.tdude.co
     - monitoring.tdude.co
