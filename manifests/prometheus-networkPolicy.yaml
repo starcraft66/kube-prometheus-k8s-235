@@ -40,7 +40,7 @@ spec:
         matchLabels:
           app.kubernetes.io/name: pyrra
     ports:
-    - port: 9093
+    - port: 9090
       protocol: TCP
   podSelector:
     matchLabels:
