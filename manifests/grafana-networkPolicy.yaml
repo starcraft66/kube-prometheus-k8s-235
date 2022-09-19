@@ -19,6 +19,16 @@ spec:
     ports:
     - port: 3000
       protocol: TCP
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - port: 3000
+      protocol: TCP
   podSelector:
     matchLabels:
       app.kubernetes.io/component: grafana
