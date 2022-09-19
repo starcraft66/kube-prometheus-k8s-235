@@ -29,6 +29,19 @@ spec:
     ports:
     - port: 9090
       protocol: TCP
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: pyrra
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - port: 9090
+      protocol: TCP
   podSelector:
     matchLabels:
       app.kubernetes.io/component: prometheus
