@@ -313,6 +313,75 @@ local kp =
   // (import 'kube-prometheus/addons/external-metrics.libsonnet') +
   (import 'kube-prometheus/addons/pyrra.libsonnet') +
   {
+    prometheus+: {
+      networkPolicy+: {
+        spec+: {
+          ingress: super.ingress + [
+            {
+              from: [
+                {
+                  podSelector: {
+                    matchLabels: {
+                      "app.kubernetes.io/name": "pyrra"
+                    }
+                  }
+                },
+                {
+                  podSelector: {
+                    matchLabels: {
+                      "app.kubernetes.io/name": "traefik"
+                    }
+                  },
+                  namespaceSelector: {
+                    matchLabels: {
+                      "kubernetes.io/metadata.name": "traefik"
+                    }
+                  }
+                }
+              ],
+              ports: [
+                {
+                  port: 9090,
+                  protocol: "TCP"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    alertmanager+: {
+      networkPolicy+: {
+        spec+: {
+          ingress: super.ingress + [
+            {
+              from: [
+                {
+                  podSelector: {
+                    matchLabels: {
+                      "app.kubernetes.io/name": "traefik"
+                    }
+                  },
+                  namespaceSelector: {
+                    matchLabels: {
+                      "kubernetes.io/metadata.name": "traefik"
+                    }
+                  }
+                }
+              ],
+              ports: [
+                {
+                  port: 9093,
+                  protocol: "TCP"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  } +
+  {
     values+:: {
       common+: {
         namespace: 'monitoring',
