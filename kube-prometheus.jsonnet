@@ -346,7 +346,7 @@ local kp =
               ],
               ports: [
                 {
-                  port: 9093,
+                  port: 9090,
                   protocol: "TCP"
                 }
               ]
