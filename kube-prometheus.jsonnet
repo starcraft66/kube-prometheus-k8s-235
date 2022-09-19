@@ -301,6 +301,23 @@ local etcdMixin = addMixin({
   },
 });
 
+local fromTraefik() = {
+  from: [
+    {
+      podSelector: {
+        matchLabels: {
+          "app.kubernetes.io/name": "traefik"
+        }
+      },
+      namespaceSelector: {
+        matchLabels: {
+          "kubernetes.io/metadata.name": "traefik"
+        }
+      }
+    }
+  ]
+};
+
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
   // Uncomment the following imports to enable its patches
@@ -317,31 +334,19 @@ local kp =
       networkPolicy+: {
         spec+: {
           ingress: super.ingress + [
-            {
-              from: [
+            fromTraefik() + {
+              from+: [
                 {
                   podSelector: {
                     matchLabels: {
                       "app.kubernetes.io/name": "pyrra"
                     }
                   }
-                },
-                {
-                  podSelector: {
-                    matchLabels: {
-                      "app.kubernetes.io/name": "traefik"
-                    }
-                  },
-                  namespaceSelector: {
-                    matchLabels: {
-                      "kubernetes.io/metadata.name": "traefik"
-                    }
-                  }
                 }
               ],
               ports: [
                 {
-                  port: 9090,
+                  port: 9093,
                   protocol: "TCP"
                 }
               ]
@@ -354,24 +359,26 @@ local kp =
       networkPolicy+: {
         spec+: {
           ingress: super.ingress + [
-            {
-              from: [
-                {
-                  podSelector: {
-                    matchLabels: {
-                      "app.kubernetes.io/name": "traefik"
-                    }
-                  },
-                  namespaceSelector: {
-                    matchLabels: {
-                      "kubernetes.io/metadata.name": "traefik"
-                    }
-                  }
-                }
-              ],
+            fromTraefik() + {
               ports: [
                 {
                   port: 9093,
+                  protocol: "TCP"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    grafana+: {
+      networkPolicy+: {
+        spec+: {
+          ingress: super.ingress + [
+            fromTraefik() + {
+              ports: [
+                {
+                  port: 3000,
                   protocol: "TCP"
                 }
               ]
