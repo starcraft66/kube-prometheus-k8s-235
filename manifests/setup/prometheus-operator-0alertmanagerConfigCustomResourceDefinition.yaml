@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
+    controller-gen.kubebuilder.io/version: v0.9.2
   creationTimestamp: null
   name: alertmanagerconfigs.monitoring.coreos.com
 spec:
@@ -35,7 +35,7 @@ spec:
             description: AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration. By definition, the Alertmanager configuration only applies to alerts for which the `namespace` label is equal to the namespace of the AlertmanagerConfig resource.
             properties:
               inhibitRules:
-                description: List of inhibition rules. The rules will only apply to alerts matching the resource’s namespace.
+                description: List of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
                 items:
                   description: InhibitRule defines an inhibition rule that allows to mute alerts when other alerts are already firing. See https://prometheus.io/docs/alerting/latest/configuration/#inhibit_rule
                   properties:
@@ -45,7 +45,7 @@ spec:
                         type: string
                       type: array
                     sourceMatch:
-                      description: Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource’s namespace.
+                      description: Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource's namespace.
                       items:
                         description: Matcher defines how to match on alert's labels.
                         properties:
@@ -72,7 +72,7 @@ spec:
                         type: object
                       type: array
                     targetMatch:
-                      description: Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource’s namespace.
+                      description: Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource's namespace.
                       items:
                         description: Matcher defines how to match on alert's labels.
                         properties:
@@ -258,7 +258,7 @@ spec:
                             description: TLS configuration
                             properties:
                               ca:
-                                description: Struct containing the CA cert to use for the targets.
+                                description: Certificate authority used when verifying server certificates.
                                 properties:
                                   configMap:
                                     description: ConfigMap containing data to use for the targets.
@@ -275,6 +275,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   secret:
                                     description: Secret containing data to use for the targets.
                                     properties:
@@ -290,9 +291,10 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               cert:
-                                description: Struct containing the client cert file for the targets.
+                                description: Client certificate to present when doing client-authentication.
                                 properties:
                                   configMap:
                                     description: ConfigMap containing data to use for the targets.
@@ -309,6 +311,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   secret:
                                     description: Secret containing data to use for the targets.
                                     properties:
@@ -324,6 +327,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               insecureSkipVerify:
                                 description: Disable target certificate validation.
@@ -343,6 +347,7 @@ spec:
                                 required:
                                 - key
                                 type: object
+                                x-kubernetes-map-type: atomic
                               serverName:
                                 description: Used to verify the hostname for the targets.
                                 type: string
@@ -426,6 +431,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   type:
                                     description: Set the authentication type. Defaults to Bearer, Basic will cause an error
                                     type: string
@@ -448,6 +454,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   username:
                                     description: The secret in the service monitor namespace that contains the username for authentication.
                                     properties:
@@ -463,6 +470,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               bearerTokenSecret:
                                 description: The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
@@ -503,6 +511,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -518,6 +527,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   clientSecret:
                                     description: The secret containing the OAuth2 client secret
@@ -534,6 +544,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   endpointParams:
                                     additionalProperties:
                                       type: string
@@ -560,7 +571,7 @@ spec:
                                 description: TLS configuration for the client.
                                 properties:
                                   ca:
-                                    description: Struct containing the CA cert to use for the targets.
+                                    description: Certificate authority used when verifying server certificates.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -577,6 +588,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -592,9 +604,10 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   cert:
-                                    description: Struct containing the client cert file for the targets.
+                                    description: Client certificate to present when doing client-authentication.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -611,6 +624,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -626,6 +640,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   insecureSkipVerify:
                                     description: Disable target certificate validation.
@@ -645,6 +660,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   serverName:
                                     description: Used to verify the hostname for the targets.
                                     type: string
@@ -762,6 +778,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   type:
                                     description: Set the authentication type. Defaults to Bearer, Basic will cause an error
                                     type: string
@@ -784,6 +801,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   username:
                                     description: The secret in the service monitor namespace that contains the username for authentication.
                                     properties:
@@ -799,6 +817,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               bearerTokenSecret:
                                 description: The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
@@ -839,6 +858,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -854,6 +874,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   clientSecret:
                                     description: The secret containing the OAuth2 client secret
@@ -870,6 +891,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   endpointParams:
                                     additionalProperties:
                                       type: string
@@ -896,7 +918,7 @@ spec:
                                 description: TLS configuration for the client.
                                 properties:
                                   ca:
-                                    description: Struct containing the CA cert to use for the targets.
+                                    description: Certificate authority used when verifying server certificates.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -913,6 +935,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -928,9 +951,10 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   cert:
-                                    description: Struct containing the client cert file for the targets.
+                                    description: Client certificate to present when doing client-authentication.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -947,6 +971,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -962,6 +987,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   insecureSkipVerify:
                                     description: Disable target certificate validation.
@@ -981,6 +1007,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   serverName:
                                     description: Used to verify the hostname for the targets.
                                     type: string
@@ -1089,6 +1116,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   type:
                                     description: Set the authentication type. Defaults to Bearer, Basic will cause an error
                                     type: string
@@ -1111,6 +1139,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   username:
                                     description: The secret in the service monitor namespace that contains the username for authentication.
                                     properties:
@@ -1126,6 +1155,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               bearerTokenSecret:
                                 description: The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
@@ -1166,6 +1196,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -1181,6 +1212,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   clientSecret:
                                     description: The secret containing the OAuth2 client secret
@@ -1197,6 +1229,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   endpointParams:
                                     additionalProperties:
                                       type: string
@@ -1223,7 +1256,7 @@ spec:
                                 description: TLS configuration for the client.
                                 properties:
                                   ca:
-                                    description: Struct containing the CA cert to use for the targets.
+                                    description: Certificate authority used when verifying server certificates.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -1240,6 +1273,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -1255,9 +1289,10 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   cert:
-                                    description: Struct containing the client cert file for the targets.
+                                    description: Client certificate to present when doing client-authentication.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -1274,6 +1309,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -1289,6 +1325,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   insecureSkipVerify:
                                     description: Disable target certificate validation.
@@ -1308,6 +1345,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   serverName:
                                     description: Used to verify the hostname for the targets.
                                     type: string
@@ -1333,7 +1371,7 @@ spec:
                             description: Notification title.
                             type: string
                           token:
-                            description: The secret's key that contains the registered application’s API token, see https://pushover.net/apps. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
+                            description: The secret's key that contains the registered application's API token, see https://pushover.net/apps. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
                             properties:
                               key:
                                 description: The key of the secret to select from.  Must be a valid secret key.
@@ -1354,7 +1392,7 @@ spec:
                             description: A title for supplementary URL, otherwise just the URL is shown
                             type: string
                           userKey:
-                            description: The secret's key that contains the recipient user’s user key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
+                            description: The secret's key that contains the recipient user's user key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
                             properties:
                               key:
                                 description: The key of the secret to select from.  Must be a valid secret key.
@@ -1479,6 +1517,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   type:
                                     description: Set the authentication type. Defaults to Bearer, Basic will cause an error
                                     type: string
@@ -1501,6 +1540,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   username:
                                     description: The secret in the service monitor namespace that contains the username for authentication.
                                     properties:
@@ -1516,6 +1556,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               bearerTokenSecret:
                                 description: The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
@@ -1556,6 +1597,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -1571,6 +1613,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   clientSecret:
                                     description: The secret containing the OAuth2 client secret
@@ -1587,6 +1630,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   endpointParams:
                                     additionalProperties:
                                       type: string
@@ -1613,7 +1657,7 @@ spec:
                                 description: TLS configuration for the client.
                                 properties:
                                   ca:
-                                    description: Struct containing the CA cert to use for the targets.
+                                    description: Certificate authority used when verifying server certificates.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -1630,6 +1674,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -1645,9 +1690,10 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   cert:
-                                    description: Struct containing the client cert file for the targets.
+                                    description: Client certificate to present when doing client-authentication.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -1664,6 +1710,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -1679,6 +1726,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   insecureSkipVerify:
                                     description: Disable target certificate validation.
@@ -1698,6 +1746,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   serverName:
                                     description: Used to verify the hostname for the targets.
                                     type: string
@@ -1768,6 +1817,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   type:
                                     description: Set the authentication type. Defaults to Bearer, Basic will cause an error
                                     type: string
@@ -1790,6 +1840,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   username:
                                     description: The secret in the service monitor namespace that contains the username for authentication.
                                     properties:
@@ -1805,6 +1856,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               bearerTokenSecret:
                                 description: The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
@@ -1845,6 +1897,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -1860,6 +1913,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   clientSecret:
                                     description: The secret containing the OAuth2 client secret
@@ -1876,6 +1930,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   endpointParams:
                                     additionalProperties:
                                       type: string
@@ -1902,7 +1957,7 @@ spec:
                                 description: TLS configuration for the client.
                                 properties:
                                   ca:
-                                    description: Struct containing the CA cert to use for the targets.
+                                    description: Certificate authority used when verifying server certificates.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -1919,6 +1974,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -1934,9 +1990,10 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   cert:
-                                    description: Struct containing the client cert file for the targets.
+                                    description: Client certificate to present when doing client-authentication.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -1953,6 +2010,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -1968,6 +2026,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   insecureSkipVerify:
                                     description: Disable target certificate validation.
@@ -1987,6 +2046,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   serverName:
                                     description: Used to verify the hostname for the targets.
                                     type: string
@@ -2019,6 +2079,7 @@ spec:
                                 required:
                                 - key
                                 type: object
+                                x-kubernetes-map-type: atomic
                               profile:
                                 description: Profile is the named AWS profile used to authenticate.
                                 type: string
@@ -2043,6 +2104,7 @@ spec:
                                 required:
                                 - key
                                 type: object
+                                x-kubernetes-map-type: atomic
                             type: object
                           subject:
                             description: Subject line when the message is delivered to email endpoints.
@@ -2106,6 +2168,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   type:
                                     description: Set the authentication type. Defaults to Bearer, Basic will cause an error
                                     type: string
@@ -2128,6 +2191,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   username:
                                     description: The secret in the service monitor namespace that contains the username for authentication.
                                     properties:
@@ -2143,6 +2207,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               bearerTokenSecret:
                                 description: The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
@@ -2183,6 +2248,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -2198,6 +2264,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   clientSecret:
                                     description: The secret containing the OAuth2 client secret
@@ -2214,6 +2281,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   endpointParams:
                                     additionalProperties:
                                       type: string
@@ -2240,7 +2308,7 @@ spec:
                                 description: TLS configuration for the client.
                                 properties:
                                   ca:
-                                    description: Struct containing the CA cert to use for the targets.
+                                    description: Certificate authority used when verifying server certificates.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -2257,6 +2325,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -2272,9 +2341,10 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   cert:
-                                    description: Struct containing the client cert file for the targets.
+                                    description: Client certificate to present when doing client-authentication.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -2291,6 +2361,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -2306,6 +2377,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   insecureSkipVerify:
                                     description: Disable target certificate validation.
@@ -2325,6 +2397,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   serverName:
                                     description: Used to verify the hostname for the targets.
                                     type: string
@@ -2409,6 +2482,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   type:
                                     description: Set the authentication type. Defaults to Bearer, Basic will cause an error
                                     type: string
@@ -2431,6 +2505,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   username:
                                     description: The secret in the service monitor namespace that contains the username for authentication.
                                     properties:
@@ -2446,6 +2521,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               bearerTokenSecret:
                                 description: The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
@@ -2486,6 +2562,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -2501,6 +2578,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   clientSecret:
                                     description: The secret containing the OAuth2 client secret
@@ -2517,6 +2595,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   endpointParams:
                                     additionalProperties:
                                       type: string
@@ -2543,7 +2622,7 @@ spec:
                                 description: TLS configuration for the client.
                                 properties:
                                   ca:
-                                    description: Struct containing the CA cert to use for the targets.
+                                    description: Certificate authority used when verifying server certificates.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -2560,6 +2639,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -2575,9 +2655,10 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   cert:
-                                    description: Struct containing the client cert file for the targets.
+                                    description: Client certificate to present when doing client-authentication.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -2594,6 +2675,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -2609,6 +2691,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   insecureSkipVerify:
                                     description: Disable target certificate validation.
@@ -2628,6 +2711,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   serverName:
                                     description: Used to verify the hostname for the targets.
                                     type: string
@@ -2676,6 +2760,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   type:
                                     description: Set the authentication type. Defaults to Bearer, Basic will cause an error
                                     type: string
@@ -2698,6 +2783,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   username:
                                     description: The secret in the service monitor namespace that contains the username for authentication.
                                     properties:
@@ -2713,6 +2799,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               bearerTokenSecret:
                                 description: The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
@@ -2753,6 +2840,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -2768,6 +2856,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   clientSecret:
                                     description: The secret containing the OAuth2 client secret
@@ -2784,6 +2873,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   endpointParams:
                                     additionalProperties:
                                       type: string
@@ -2810,7 +2900,7 @@ spec:
                                 description: TLS configuration for the client.
                                 properties:
                                   ca:
-                                    description: Struct containing the CA cert to use for the targets.
+                                    description: Certificate authority used when verifying server certificates.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -2827,6 +2917,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -2842,9 +2933,10 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   cert:
-                                    description: Struct containing the client cert file for the targets.
+                                    description: Client certificate to present when doing client-authentication.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -2861,6 +2953,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -2876,6 +2969,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   insecureSkipVerify:
                                     description: Disable target certificate validation.
@@ -2895,6 +2989,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   serverName:
                                     description: Used to verify the hostname for the targets.
                                     type: string
@@ -2977,6 +3072,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   type:
                                     description: Set the authentication type. Defaults to Bearer, Basic will cause an error
                                     type: string
@@ -2999,6 +3095,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   username:
                                     description: The secret in the service monitor namespace that contains the username for authentication.
                                     properties:
@@ -3014,6 +3111,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                 type: object
                               bearerTokenSecret:
                                 description: The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
@@ -3054,6 +3152,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -3069,6 +3168,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   clientSecret:
                                     description: The secret containing the OAuth2 client secret
@@ -3085,6 +3185,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   endpointParams:
                                     additionalProperties:
                                       type: string
@@ -3111,7 +3212,7 @@ spec:
                                 description: TLS configuration for the client.
                                 properties:
                                   ca:
-                                    description: Struct containing the CA cert to use for the targets.
+                                    description: Certificate authority used when verifying server certificates.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -3128,6 +3229,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -3143,9 +3245,10 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   cert:
-                                    description: Struct containing the client cert file for the targets.
+                                    description: Client certificate to present when doing client-authentication.
                                     properties:
                                       configMap:
                                         description: ConfigMap containing data to use for the targets.
@@ -3162,6 +3265,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                       secret:
                                         description: Secret containing data to use for the targets.
                                         properties:
@@ -3177,6 +3281,7 @@ spec:
                                         required:
                                         - key
                                         type: object
+                                        x-kubernetes-map-type: atomic
                                     type: object
                                   insecureSkipVerify:
                                     description: Disable target certificate validation.
@@ -3196,6 +3301,7 @@ spec:
                                     required:
                                     - key
                                     type: object
+                                    x-kubernetes-map-type: atomic
                                   serverName:
                                     description: Used to verify the hostname for the targets.
                                     type: string
@@ -3222,8 +3328,13 @@ spec:
                   type: object
                 type: array
               route:
-                description: The Alertmanager route definition for alerts matching the resource’s namespace. If present, it will be added to the generated Alertmanager configuration as a first-level route.
+                description: The Alertmanager route definition for alerts matching the resource's namespace. If present, it will be added to the generated Alertmanager configuration as a first-level route.
                 properties:
+                  activeTimeIntervals:
+                    description: ActiveTimeIntervals is a list of MuteTimeInterval names when this route should be active.
+                    items:
+                      type: string
+                    type: array
                   continue:
                     description: Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.
                     type: boolean
@@ -3239,7 +3350,7 @@ spec:
                     description: 'How long to wait before sending the initial notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "30s"'
                     type: string
                   matchers:
-                    description: 'List of matchers that the alert’s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher.'
+                    description: 'List of matchers that the alert''s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher.'
                     items:
                       description: Matcher defines how to match on alert's labels.
                       properties:
@@ -3288,9 +3399,3 @@ spec:
         type: object
     served: true
     storage: true
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
