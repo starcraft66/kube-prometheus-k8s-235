@@ -146,129 +146,6 @@ local alertmanagerDiscord = {
   },
 };
 
-local matrixAlertmanager = {
-  deployment: {
-    kind: 'Deployment',
-    apiVersion: 'apps/v1',
-    metadata: {
-      name: 'matrix-alertmanager',
-      namespace: 'monitoring',
-    },
-    spec: {
-      replicas: 2,
-      selector: {
-        matchLabels: {
-          'app.kubernetes.io/name': 'matrix-alertmanager',
-        },
-      },
-      template: {
-        metadata: {
-          labels: {
-            'app.kubernetes.io/name': 'matrix-alertmanager',
-          },
-        },
-        spec: {
-          containers: [
-            {
-              name: 'matrix-alertmanager',
-              image: 'jaywink/matrix-alertmanager:latest',
-              ports: [{
-                name: 'web',
-                containerPort: 9094,
-              }],
-              env: [{
-                name: 'MATRIX_TOKEN',
-                valueFrom: {
-                  secretKeyRef: {
-                    name: 'matrix-token',
-                    key: 'MATRIX_TOKEN',
-                  },
-                },
-              }, {
-                name: 'APP_PORT',
-                value: '9094',
-              }, {
-                name: 'MATRIX_HOMESERVER_URL',
-                value: 'https://nerdsin.space',
-              }, {
-                name: 'MATRIX_ROOMS',
-                value: 'matrix-notifications/!RbXWoszwkilTQXDBUA:nerdsin.space',
-              }, {
-                name: 'MATRIX_USER',
-                value: '@alertmanager-k8s-235:nerdsin.space',
-              }, {
-                name: 'APP_ALERTMANAGER_SECRET',
-                value: 'whybother',
-              }],
-              resources: {
-                requests: {
-                  cpu: '50m',
-                },
-                limits: {
-                  cpu: '100m',
-                },
-              },
-            },
-          ],
-        },
-      },
-    },
-  },
-  service: {
-    apiVersion: 'v1',
-    kind: 'Service',
-    metadata: {
-      name: 'matrix-alertmanager',
-      namespace: 'monitoring',
-    },
-    spec: {
-      ports: [
-        { name: 'web', targetPort: 'web', port: 3000 },
-      ],
-      selector: {
-        'app.kubernetes.io/name': 'matrix-alertmanager',
-      },
-    },
-  },
-  networkPolicy: {
-    apiVersion: 'networking.k8s.io/v1',
-    kind: 'NetworkPolicy',
-    metadata: {
-      name: 'matrix-alertmanager',
-      namespace: 'monitoring',
-    },
-    spec: {
-      podSelector: {
-        matchLabels: {
-          'app.kubernetes.io/name': 'matrix-alertmanager',
-        },
-      },
-      policyTypes: [
-        'Ingress',
-      ],
-      ingress: [
-        {
-          from: [
-            {
-              podSelector: {
-                matchLabels: {
-                  'app.kubernetes.io/name': 'alertmanager',
-                },
-              },
-            },
-          ],
-          ports: [
-            {
-              protocol: 'TCP',
-              port: 9094,
-            },
-          ],
-        },
-      ],
-    },
-  },
-};
-
 local addMixin = (import 'kube-prometheus/lib/mixin.libsonnet');
 local corednsMixin = addMixin({
   name: 'coredns',
@@ -450,17 +327,12 @@ local kp =
                 alertname: Watchdog
               receiver: 'null'
             - receiver: 'discord-notifications'
-              continue: true
-            - receiver: 'matrix-notifications'
             
           receivers:
             - name: 'null'
             - name: 'discord-notifications'
               webhook_configs:
                 - url: 'http://alertmanager-discord:9094'
-            - name: 'matrix-notifications'
-              webhook_configs:
-                - url: 'http://matrix-alertmanager:3000/alerts?secret=whybother'
         |||,
       },
     },
@@ -618,7 +490,6 @@ local manifests =
   { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
   { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
   { ['alertmanager-discord-' + name]: alertmanagerDiscord[name] for name in std.objectFields(alertmanagerDiscord) } +
-  { ['matrix-alertmanager-' + name]: matrixAlertmanager[name] for name in std.objectFields(matrixAlertmanager) } +
   { [name + '-ingress']: kp.ingress[name] for name in std.objectFields(kp.ingress) } +
   //{ 'external-mixins/mysqld-mixin-prometheus-rules': mysqldMixin.prometheusRules }
   //{ 'external-mixins/postgres-mixin-prometheus-rules': postgresMixin.prometheusRules }
