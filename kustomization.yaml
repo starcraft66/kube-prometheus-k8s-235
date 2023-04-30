@@ -50,9 +50,6 @@ resources:
 - ./manifests/kubernetes-serviceMonitorKubeControllerManager.yaml
 - ./manifests/kubernetes-serviceMonitorKubeScheduler.yaml
 - ./manifests/kubernetes-serviceMonitorKubelet.yaml
-- ./manifests/matrix-alertmanager-deployment.yaml
-- ./manifests/matrix-alertmanager-networkPolicy.yaml
-- ./manifests/matrix-alertmanager-service.yaml
 - ./manifests/node-exporter-clusterRole.yaml
 - ./manifests/node-exporter-clusterRoleBinding.yaml
 - ./manifests/node-exporter-daemonset.yaml

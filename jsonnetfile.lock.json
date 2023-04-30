@@ -48,7 +48,7 @@
           "subdir": "grafonnet"
         }
       },
-      "version": "30280196507e0fe6fa978a3e0eaca3a62844f817",
+      "version": "f0b70307b8e5f12236b277883d998af129a8211f",
       "sum": "342u++/7rViR/zj2jeJOjshzglkZ1SY+hFNuyCBFMdc="
     },
     {
@@ -58,7 +58,7 @@
           "subdir": "grafonnet-7.0"
         }
       },
-      "version": "30280196507e0fe6fa978a3e0eaca3a62844f817",
+      "version": "f0b70307b8e5f12236b277883d998af129a8211f",
       "sum": "gCtR9s/4D5fxU9aKXg0Bru+/njZhA0YjLjPiASc61FM="
     },
     {
@@ -68,7 +68,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "5a7193731c96c8f82a4bd105de2537d7622e5bb1",
+      "version": "1cb605505efe5a630f00993ff611a241fdcc264f",
       "sum": "tDR6yT2GVfw0wTU12iZH+m01HrbIr6g/xN+/8nzNkU0="
     },
     {
@@ -201,7 +201,7 @@
           "subdir": "config/crd/bases"
         }
       },
-      "version": "61eb388891c72da78ec3252f769d9dda4acabf1b",
+      "version": "490bebc3ac2a93497301e76019adcb22eed6c543",
       "sum": "d1550yhsX4VxdVN7b0gWT0cido/W90P6OGLzLqPwZcs="
     },
     {
