@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: api
     app.kubernetes.io/name: pyrra
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 0.5.2
+    app.kubernetes.io/version: 0.6.4
   name: pyrra-api
   namespace: monitoring
 spec:
@@ -25,14 +25,14 @@ spec:
         app.kubernetes.io/component: api
         app.kubernetes.io/name: pyrra
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 0.5.2
+        app.kubernetes.io/version: 0.6.4
     spec:
       containers:
       - args:
         - api
         - --api-url=http://pyrra-kubernetes.monitoring.svc.cluster.local:9444
         - --prometheus-url=http://prometheus-k8s.monitoring.svc.cluster.local:9090
-        image: ghcr.io/pyrra-dev/pyrra:v0.5.2
+        image: ghcr.io/pyrra-dev/pyrra:v0.6.4
         name: pyrra
         ports:
         - containerPort: 9099

@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: grafana
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 9.3.2
+    app.kubernetes.io/version: 9.5.3
   name: grafana
   namespace: monitoring
 spec:
@@ -20,14 +20,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-config: cca058fb88e40295697c55bd8b11c30f
-        checksum/grafana-dashboardproviders: d8fb24844314114bed088b83042b1bdb
-        checksum/grafana-datasources: 0800bab7ea1e2d8ad5c09586d089e033
+        checksum/grafana-config: 250c554c1c28684522d98fbe6486d5c8
+        checksum/grafana-dashboardproviders: c9c1743868aa1c3dab60d2c402e2dcf0
+        checksum/grafana-datasources: 5ef0e6acaa5b4e8603740fbad440717d
       labels:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 9.3.2
+        app.kubernetes.io/version: 9.5.3
     spec:
       automountServiceAccountToken: false
       containers:
@@ -37,7 +37,7 @@ spec:
         envFrom:
         - secretRef:
             name: grafana-admin-credentials
-        image: grafana/grafana:9.3.2
+        image: grafana/grafana:9.5.3
         name: grafana
         ports:
         - containerPort: 3000
@@ -59,6 +59,8 @@ spec:
             drop:
             - ALL
           readOnlyRootFilesystem: true
+          seccompProfile:
+            type: RuntimeDefault
         volumeMounts:
         - mountPath: /var/lib/grafana
           name: grafana-storage
@@ -95,6 +97,9 @@ spec:
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-cluster
           name: grafana-dashboard-k8s-resources-cluster
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/k8s-resources-multicluster
+          name: grafana-dashboard-k8s-resources-multicluster
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-namespace
           name: grafana-dashboard-k8s-resources-namespace
@@ -202,6 +207,9 @@ spec:
       - configMap:
           name: grafana-dashboard-k8s-resources-cluster
         name: grafana-dashboard-k8s-resources-cluster
+      - configMap:
+          name: grafana-dashboard-k8s-resources-multicluster
+        name: grafana-dashboard-k8s-resources-multicluster
       - configMap:
           name: grafana-dashboard-k8s-resources-namespace
         name: grafana-dashboard-k8s-resources-namespace
