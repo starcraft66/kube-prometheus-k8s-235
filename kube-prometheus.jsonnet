@@ -207,6 +207,28 @@ local kp =
   // (import 'kube-prometheus/addons/external-metrics.libsonnet') +
   (import 'kube-prometheus/addons/pyrra.libsonnet') +
   {
+    kubeStateMetrics+: {
+      deployment+: {
+        spec+: {
+          template+: {
+            spec+: {
+              # allowlist some node labels used in alert rules
+              # Format:
+              # https://github.com/prometheus-community/helm-charts/blob/019442a590178d1f1fa948c7042cd0f56ef7cf57/charts/kube-state-metrics/values.yaml#L345-L352
+              containers: [
+                super.containers[0] + {
+                  args: super.args + [
+                    '--metric-labels-allowlist=nodes=[kubevirt.io/schedulable]',
+                  ],
+                },
+              ] + super.containers[1:],
+            },
+          },
+        },
+      },
+    },
+  } +
+  {
     prometheus+: {
       networkPolicy+: {
         spec+: {
