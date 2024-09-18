@@ -38,6 +38,12 @@ spec:
         - containerPort: 9099
         securityContext:
           allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
           readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
       nodeSelector:
         kubernetes.io/os: linux

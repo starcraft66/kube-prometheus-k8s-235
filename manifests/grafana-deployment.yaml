@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: grafana
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 9.5.3
+    app.kubernetes.io/version: 11.2.0
   name: grafana
   namespace: monitoring
 spec:
@@ -20,14 +20,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-config: 250c554c1c28684522d98fbe6486d5c8
-        checksum/grafana-dashboardproviders: c9c1743868aa1c3dab60d2c402e2dcf0
-        checksum/grafana-datasources: 5ef0e6acaa5b4e8603740fbad440717d
+        checksum/grafana-config: f8d2d8bcd87ca931e3eaea3fb675c550
+        checksum/grafana-dashboardproviders: b66e063b0e9d7b9e152e066f0ab965ee
+        checksum/grafana-datasources: 495c78a90b81354c8feeece92f6f5466
       labels:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 9.5.3
+        app.kubernetes.io/version: 11.2.0
     spec:
       automountServiceAccountToken: false
       containers:
@@ -37,7 +37,7 @@ spec:
         envFrom:
         - secretRef:
             name: grafana-admin-credentials
-        image: grafana/grafana:9.5.3
+        image: grafana/grafana:11.2.0
         name: grafana
         ports:
         - containerPort: 3000
@@ -168,6 +168,7 @@ spec:
         kubernetes.io/os: linux
       securityContext:
         fsGroup: 65534
+        runAsGroup: 65534
         runAsNonRoot: true
         runAsUser: 65534
       serviceAccountName: grafana
