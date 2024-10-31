@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: alertmanager-discord
+  namespace: monitoring
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: alertmanager
+    ports:
+    - port: 9094
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: alertmanager-discord
+  policyTypes:
+  - Ingress

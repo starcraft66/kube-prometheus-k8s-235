@@ -1,0 +1,42 @@
+{
+   "apiVersion": "networking.k8s.io/v1",
+   "kind": "Ingress",
+   "metadata": {
+      "annotations": {
+         "cert-manager.io/cluster-issuer": "letsencrypt-prod",
+         "traefik.ingress.kubernetes.io/router.tls": "true"
+      },
+      "name": "grafana",
+      "namespace": "monitoring"
+   },
+   "spec": {
+      "ingressClassName": "traefik",
+      "rules": [
+         {
+            "host": "monitoring.235.tdude.co",
+            "http": {
+               "paths": [
+                  {
+                     "backend": {
+                        "service": {
+                           "name": "grafana",
+                           "port": {
+                              "name": "http"
+                           }
+                        }
+                     },
+                     "path": "/",
+                     "pathType": "Prefix"
+                  }
+               ]
+            }
+         }
+      ],
+      "tls": [
+         {
+            "hosts": [ ],
+            "secretName": "235-tdude-co-tls"
+         }
+      ]
+   }
+}
