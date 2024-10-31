@@ -38,7 +38,7 @@ jsonnet -J vendor -m manifests kube-prometheus.jsonnet | xargs -I{} sh -c 'cat {
 find manifests -type f ! -name '*.yaml' -delete
 rm -f kustomization
 
-git add jsonnetfile.json jsonnetfile.lock.json kustomization.yaml manifests
+git add jsonnetfile.json jsonnetfile.lock.json kustomization.yaml manifests*
 git commit -m "Release v$RELEASE"
 git checkout -b release/$RELEASE
 git tag -s v$RELEASE -m "Release v$RELEASE"
