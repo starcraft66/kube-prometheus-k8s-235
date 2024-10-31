@@ -513,10 +513,10 @@ local manifests = function(kpd)
   { [name + '-ingress']: kpd.ingress[name] for name in std.objectFields(kpd.ingress) } +
   //{ 'external-mixins/mysqld-mixin-prometheus-rules': mysqldMixin.prometheusRules }
   //{ 'external-mixins/postgres-mixin-prometheus-rules': postgresMixin.prometheusRules }
-  { 'elasticsearch-mixin-prometheus-rules': elasticsearchMixin.prometheusRules }
+  { 'elasticsearch-mixin-prometheus-rules': elasticsearchMixin.prometheusRules } +
   { 'etcd-mixin-prometheus-rules': etcdMixin.prometheusRules };
 
-local kustomizationResourceFile(name) = './manifests/' + name + '.yaml';
+local kustomizationResourceFile(name) = name + '.yaml';
 local kustomization = function(kpd) {
   apiVersion: 'kustomize.config.k8s.io/v1beta1',
   kind: 'Kustomization',
@@ -524,6 +524,6 @@ local kustomization = function(kpd) {
 };
 
 function(domain)
-manifests(kp(domain)) {
-  '../kustomization': kustomization(kp(domain)),
+manifests(kp(domain)) + {
+  'kustomization': kustomization(kp(domain)),
 }
