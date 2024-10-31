@@ -36,10 +36,10 @@ jsonnet -J vendor -m manifests-235 kube-prometheus.jsonnet --tla-str domain=235.
 jsonnet -J vendor -m manifests-305-1700 kube-prometheus.jsonnet --tla-str domain=305-1700.tdude.co | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml' -- {}
 
 # Make sure to remove json files
-find manifests -type f ! -name '*.yaml' -delete
+find manifests-* -type f ! -name '*.yaml' -delete
 rm -f kustomization
 
-git add jsonnetfile.json jsonnetfile.lock.json kustomization.yaml manifests*
+git add jsonnetfile.json jsonnetfile.lock.json manifests-*
 git commit -m "Release v$RELEASE"
 git checkout -b release/$RELEASE
 git tag -s v$RELEASE -m "Release v$RELEASE"
