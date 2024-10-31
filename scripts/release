@@ -40,7 +40,7 @@ find manifests-* -type f ! -name '*.yaml' -delete
 rm -f kustomization
 
 git add jsonnetfile.json jsonnetfile.lock.json manifests-*
-git commit -m "Release v$RELEASE"
+git commit -m "Release v$RELEASE" --allow-empty
 git checkout -b release/$RELEASE
 git tag -s v$RELEASE -m "Release v$RELEASE"
 git push
