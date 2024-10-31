@@ -18,11 +18,12 @@ Render yaml manifests from jsonnet
 jb install
 
 # Make sure to start with a clean 'manifests' dir
-rm -rf manifests
-mkdir -p manifests/setup
+rm -rf manifests-235 manifests-305-1700
+mkdir -p manifests-235/setup manifests-305-1700/setup
 
 # Calling gojsontoyaml is optional, but we would like to generate yaml, not json
-jsonnet -J vendor -m manifests kube-prometheus.jsonnet | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml' -- {}
+jsonnet -J vendor -m manifests-235 kube-prometheus.jsonnet --tla-str domain=235.tdude.co | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml' -- {}
+jsonnet -J vendor -m manifests-305-1700 kube-prometheus.jsonnet --tla-str domain=305-1700.tdude.co | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml' -- {}
 
 # Make sure to remove json files
 find manifests -type f ! -name '*.yaml' -delete

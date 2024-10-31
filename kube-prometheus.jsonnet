@@ -1,6 +1,4 @@
-local domain = 'tdude.co';
-
-local ingress(name, namespace, hosts, rules, authenticated) = {
+local ingress(name, namespace, hosts, rules, authenticated, domain) = {
   apiVersion: 'networking.k8s.io/v1',
   kind: 'Ingress',
   metadata: {
@@ -195,7 +193,7 @@ local fromTraefik() = {
   ]
 };
 
-local kp =
+local kp = function(domain)
   (import 'kube-prometheus/main.libsonnet') +
   // Uncomment the following imports to enable its patches
   // (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
@@ -412,7 +410,7 @@ local kp =
             },
           }],
         },
-      }], false),
+      }], false, domain),
       backend: ingress('backend', $.values.common.namespace, ['pyrra.monitoring.' + domain, 'prometheus.monitoring.' + domain, 'alertmanager.monitoring.' + domain, 'monitoring.' + domain], [
         {
           host: 'pyrra.monitoring.' + domain,
@@ -465,15 +463,15 @@ local kp =
             }],
           },
         },
-      ], true),
+      ], true, domain),
     },
   };
 
 // We need to inject some secrets as environment variables
 // We can't use a configMap because there's already a generated config
 // We also want temporary stateful storage with a PVC
-local modifiedGrafana = kp.grafana {
-  local g = kp.grafana,
+local modifiedGrafana = function(kpd) kpd.grafana {
+  local g = kpd.grafana,
   deployment+: {
     spec+: {
       strategy: { type: 'Recreate' },
@@ -491,40 +489,41 @@ local modifiedGrafana = kp.grafana {
   },
 };
 
-local manifests =
+local manifests = function(kpd)
   // Uncomment line below to enable vertical auto scaling of kube-state-metrics
-  //{ ['ksm-autoscaler-' + name]: kp.ksmAutoscaler[name] for name in std.objectFields(kp.ksmAutoscaler) } +
-  { ['setup/0namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+  //{ ['ksm-autoscaler-' + name]: kpd.ksmAutoscaler[name] for name in std.objectFields(kpd.ksmAutoscaler) } +
+  { ['setup/0namespace-' + name]: kpd.kubePrometheus[name] for name in std.objectFields(kpd.kubePrometheus) } +
   {
-    ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
-    for name in std.filter((function(name) name != 'serviceMonitor'), std.objectFields(kp.prometheusOperator))
+    ['setup/prometheus-operator-' + name]: kpd.prometheusOperator[name]
+    for name in std.filter((function(name) name != 'serviceMonitor'), std.objectFields(kpd.prometheusOperator))
   } +
-  { 'setup/pyrra-slo-CustomResourceDefinition': kp.pyrra.crd } +
+  { 'setup/pyrra-slo-CustomResourceDefinition': kpd.pyrra.crd } +
   // serviceMonitor is separated so that it can be created after the CRDs are ready
-  { 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
-  { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
-  { ['grafana-' + name]: modifiedGrafana[name] for name in std.objectFields(modifiedGrafana) } +
-  { ['pyrra-' + name]: kp.pyrra[name] for name in std.objectFields(kp.pyrra) if name != 'crd' } +
-  { ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
-  { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
-  { ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) } +
-  { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
-  { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
-  { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
+  { 'prometheus-operator-serviceMonitor': kpd.prometheusOperator.serviceMonitor } +
+  { ['alertmanager-' + name]: kpd.alertmanager[name] for name in std.objectFields(kpd.alertmanager) } +
+  { ['grafana-' + name]: modifiedGrafana(kpd)[name] for name in std.objectFields(modifiedGrafana(kpd)) } +
+  { ['pyrra-' + name]: kpd.pyrra[name] for name in std.objectFields(kpd.pyrra) if name != 'crd' } +
+  { ['blackbox-exporter-' + name]: kpd.blackboxExporter[name] for name in std.objectFields(kpd.blackboxExporter) } +
+  { ['kube-state-metrics-' + name]: kpd.kubeStateMetrics[name] for name in std.objectFields(kpd.kubeStateMetrics) } +
+  { ['kubernetes-' + name]: kpd.kubernetesControlPlane[name] for name in std.objectFields(kpd.kubernetesControlPlane) } +
+  { ['node-exporter-' + name]: kpd.nodeExporter[name] for name in std.objectFields(kpd.nodeExporter) } +
+  { ['prometheus-' + name]: kpd.prometheus[name] for name in std.objectFields(kpd.prometheus) } +
+  { ['prometheus-adapter-' + name]: kpd.prometheusAdapter[name] for name in std.objectFields(kpd.prometheusAdapter) } +
   { ['alertmanager-discord-' + name]: alertmanagerDiscord[name] for name in std.objectFields(alertmanagerDiscord) } +
-  { [name + '-ingress']: kp.ingress[name] for name in std.objectFields(kp.ingress) } +
+  { [name + '-ingress']: kpd.ingress[name] for name in std.objectFields(kpd.ingress) } +
   //{ 'external-mixins/mysqld-mixin-prometheus-rules': mysqldMixin.prometheusRules }
   //{ 'external-mixins/postgres-mixin-prometheus-rules': postgresMixin.prometheusRules }
   { 'elasticsearch-mixin-prometheus-rules': elasticsearchMixin.prometheusRules }
   { 'etcd-mixin-prometheus-rules': etcdMixin.prometheusRules };
 
 local kustomizationResourceFile(name) = './manifests/' + name + '.yaml';
-local kustomization = {
+local kustomization = function(kpd) {
   apiVersion: 'kustomize.config.k8s.io/v1beta1',
   kind: 'Kustomization',
-  resources: std.map(kustomizationResourceFile, std.objectFields(manifests)),
+  resources: std.map(kustomizationResourceFile, std.objectFields(manifests(kpd))),
 };
 
-manifests {
-  '../kustomization': kustomization,
+function(domain)
+manifests(kp(domain)) {
+  '../kustomization': kustomization(kp(domain)),
 }
