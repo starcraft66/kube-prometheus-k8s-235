@@ -169,11 +169,11 @@ spec:
         severity: warning
     - alert: KubeContainerWaiting
       annotations:
-        description: pod/{{ $labels.pod }} in namespace {{ $labels.namespace }} on container {{ $labels.container}} has been in waiting state for longer than 1 hour.
+        description: 'pod/{{ $labels.pod }} in namespace {{ $labels.namespace }} on container {{ $labels.container}} has been in waiting state for longer than 1 hour. (reason: "{{ $labels.reason }}").'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecontainerwaiting
         summary: Pod container waiting longer than 1 hour
       expr: |
-        sum by (namespace, pod, container, cluster) (kube_pod_container_status_waiting_reason{job="kube-state-metrics"}) > 0
+        kube_pod_container_status_waiting_reason{reason!="CrashLoopBackOff", job="kube-state-metrics"} > 0
       for: 1h
       labels:
         severity: warning
@@ -474,9 +474,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
         summary: The API server is burning too much error budget.
       expr: |
-        sum(apiserver_request:burnrate1h) > (14.40 * 0.01000)
-        and
-        sum(apiserver_request:burnrate5m) > (14.40 * 0.01000)
+        sum by(cluster) (apiserver_request:burnrate1h) > (14.40 * 0.01000)
+        and on(cluster)
+        sum by(cluster) (apiserver_request:burnrate5m) > (14.40 * 0.01000)
       for: 2m
       labels:
         long: 1h
@@ -488,9 +488,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
         summary: The API server is burning too much error budget.
       expr: |
-        sum(apiserver_request:burnrate6h) > (6.00 * 0.01000)
-        and
-        sum(apiserver_request:burnrate30m) > (6.00 * 0.01000)
+        sum by(cluster) (apiserver_request:burnrate6h) > (6.00 * 0.01000)
+        and on(cluster)
+        sum by(cluster) (apiserver_request:burnrate30m) > (6.00 * 0.01000)
       for: 15m
       labels:
         long: 6h
@@ -502,9 +502,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
         summary: The API server is burning too much error budget.
       expr: |
-        sum(apiserver_request:burnrate1d) > (3.00 * 0.01000)
-        and
-        sum(apiserver_request:burnrate2h) > (3.00 * 0.01000)
+        sum by(cluster) (apiserver_request:burnrate1d) > (3.00 * 0.01000)
+        and on(cluster)
+        sum by(cluster) (apiserver_request:burnrate2h) > (3.00 * 0.01000)
       for: 1h
       labels:
         long: 1d
@@ -516,9 +516,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
         summary: The API server is burning too much error budget.
       expr: |
-        sum(apiserver_request:burnrate3d) > (1.00 * 0.01000)
-        and
-        sum(apiserver_request:burnrate6h) > (1.00 * 0.01000)
+        sum by(cluster) (apiserver_request:burnrate3d) > (1.00 * 0.01000)
+        and on(cluster)
+        sum by(cluster) (apiserver_request:burnrate6h) > (1.00 * 0.01000)
       for: 3h
       labels:
         long: 3d
@@ -532,7 +532,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeclientcertificateexpiration
         summary: Client certificate is about to expire.
       expr: |
-        apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(job) histogram_quantile(0.01, sum by (job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 604800
+        histogram_quantile(0.01, sum without (namespace, service, endpoint) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 604800
+        and
+        on(job, cluster, instance) apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0
       for: 5m
       labels:
         severity: warning
@@ -542,7 +544,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeclientcertificateexpiration
         summary: Client certificate is about to expire.
       expr: |
-        apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(job) histogram_quantile(0.01, sum by (job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
+        histogram_quantile(0.01, sum without (namespace, service, endpoint) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
+        and
+        on(job, cluster, instance) apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0
       for: 5m
       labels:
         severity: critical
@@ -581,7 +585,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapiterminatedrequests
         summary: The kubernetes apiserver has terminated {{ $value | humanizePercentage }} of its incoming requests.
       expr: |
-        sum(rate(apiserver_request_terminations_total{job="apiserver"}[10m]))  / (  sum(rate(apiserver_request_total{job="apiserver"}[10m])) + sum(rate(apiserver_request_terminations_total{job="apiserver"}[10m])) ) > 0.20
+        sum by(cluster) (rate(apiserver_request_terminations_total{job="apiserver"}[10m])) / ( sum by(cluster) (rate(apiserver_request_total{job="apiserver"}[10m])) + sum by(cluster) (rate(apiserver_request_terminations_total{job="apiserver"}[10m])) ) > 0.20
       for: 5m
       labels:
         severity: warning
@@ -760,17 +764,17 @@ spec:
         verb: write
       record: code:apiserver_request_total:increase30d
     - expr: |
-        sum by (cluster, verb, scope) (increase(apiserver_request_sli_duration_seconds_count{job="apiserver"}[1h]))
-      record: cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h
-    - expr: |
-        sum by (cluster, verb, scope) (avg_over_time(cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h[30d]) * 24 * 30)
-      record: cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d
-    - expr: |
         sum by (cluster, verb, scope, le) (increase(apiserver_request_sli_duration_seconds_bucket[1h]))
       record: cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h
     - expr: |
         sum by (cluster, verb, scope, le) (avg_over_time(cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h[30d]) * 24 * 30)
       record: cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d
+    - expr: |
+        sum by (cluster, verb, scope) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h{le="+Inf"})
+      record: cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h
+    - expr: |
+        sum by (cluster, verb, scope) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{le="+Inf"} * 24 * 30)
+      record: cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d
     - expr: |
         1 - (
           (
