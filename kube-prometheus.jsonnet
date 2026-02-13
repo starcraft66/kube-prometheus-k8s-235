@@ -361,7 +361,7 @@ local kp = function(domain)
       },
     },
 
-    kubernetesControlPlane+:: {
+    kubernetesControlPlane+: {
       prometheusRule+: filterAlerts([
         // Some digital ocean problem that can't be explained
         // 'KubeAPIErrorBudgetBurn',
@@ -374,7 +374,7 @@ local kp = function(domain)
       ]),
     },
 
-    prometheus+:: {
+    prometheus+: {
       prometheus+: {
         spec+: {
           externalUrl: 'https://prometheus.monitoring.' + domain,
@@ -397,7 +397,7 @@ local kp = function(domain)
     },
 
 
-    ingress+:: {
+    ingress+: {
       grafana: ingress('grafana', $.values.common.namespace, [], [{
         host: 'monitoring.' + domain,
         http: {
