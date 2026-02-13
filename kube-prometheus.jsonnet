@@ -399,6 +399,7 @@ local kp = function(domain)
         // 'KubeMemoryOvercommit',
         // Causing too much noise
         'CPUThrottlingHigh',
+        'KubeVirtDeprecatedAPIRequested',
       ]),
     },
 
