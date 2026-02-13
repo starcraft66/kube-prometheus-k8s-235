@@ -226,6 +226,34 @@ local kp = function(domain)
       },
     },
   } +
+  // Fix le label normalization for Prometheus 3.x (le="5" -> le="5.0")
+  // See: https://prometheus.io/docs/prometheus/latest/migration/#le-and-quantile-label-values
+  {
+    pyrra+: {
+      'slo-apiserver-read-cluster-latency'+: {
+        spec+: {
+          indicator+: {
+            latency+: {
+              success+: {
+                metric: 'apiserver_request_duration_seconds_bucket{component="apiserver",scope=~"cluster|",verb=~"LIST|GET",le="5.0"}',
+              },
+            },
+          },
+        },
+      },
+      'slo-apiserver-read-namespace-latency'+: {
+        spec+: {
+          indicator+: {
+            latency+: {
+              success+: {
+                metric: 'apiserver_request_duration_seconds_bucket{component="apiserver",scope=~"namespace|",verb=~"LIST|GET",le="5.0"}',
+              },
+            },
+          },
+        },
+      },
+    },
+  } +
   {
     prometheus+: {
       networkPolicy+: {
