@@ -26,7 +26,7 @@
           "subdir": "jsonnet/kube-prometheus"
         }
       },
-      "version": "main"
+      "version": "release-0.16"
     },
     {
       "source": {
@@ -35,7 +35,7 @@
           "subdir": "postgres_mixin"
         }
       },
-      "version": "v0.15.0"
+      "version": "v0.19.0"
     },
     {
       "source": {
@@ -44,7 +44,7 @@
           "subdir": "mysqld-mixin"
         }
       },
-      "version": "v0.15.1"
+      "version": "v0.18.0"
     },
     {
       "source": {
@@ -53,7 +53,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "v3.5.16"
+      "version": "v3.6.7"
     }
   ],
   "legacyImports": true

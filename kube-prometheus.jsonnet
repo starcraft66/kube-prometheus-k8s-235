@@ -292,7 +292,11 @@ local kp = function(domain)
         platform: 'kubespray',
       },
       grafana+: {
-        plugins: ['grafana-piechart-panel'],
+        plugins: [],
+        resources+: {
+          requests: { cpu: '150m', memory: '256Mi' },
+          limits: { memory: '1Gi' },
+        },
         dashboards+: corednsMixin.grafanaDashboards /*mysqldMixin.dashboards, postgresMixin.dashboards,*/ + elasticsearchMixin.grafanaDashboards + etcdMixin.grafanaDashboards,
         config+: {
           sections+: {
