@@ -364,6 +364,17 @@ local kp = function(domain)
           global:
             resolve_timeout: 1m
 
+          inhibit_rules:
+            - source_matchers: ['severity = critical']
+              target_matchers: ['severity =~ warning|info']
+              equal: ['namespace', 'alertname']
+            - source_matchers: ['severity = warning']
+              target_matchers: ['severity = info']
+              equal: ['namespace', 'alertname']
+            - source_matchers: ['alertname = InfoInhibitor']
+              target_matchers: ['severity = info']
+              equal: ['namespace']
+
           route:
             group_by: ['job']
             group_wait: 30s
@@ -378,8 +389,14 @@ local kp = function(domain)
             - match:
                 alertname: Watchdog
               receiver: 'null'
+            - match:
+                alertname: InfoInhibitor
+              receiver: 'null'
+            - match:
+                severity: info
+              receiver: 'null'
             - receiver: 'discord-notifications'
-            
+
           receivers:
             - name: 'null'
             - name: 'discord-notifications'
@@ -399,7 +416,6 @@ local kp = function(domain)
         // 'KubeMemoryOvercommit',
         // Causing too much noise
         'CPUThrottlingHigh',
-        'KubeVirtDeprecatedAPIRequested',
       ]),
     },
 
