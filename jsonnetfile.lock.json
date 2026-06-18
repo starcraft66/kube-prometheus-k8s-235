@@ -178,8 +178,8 @@
           "subdir": "jsonnet/kube-prometheus"
         }
       },
-      "version": "a4bfb4d4867bef9db56a168c60b11cc63b52f2dd",
-      "sum": "znzrDFcnk7obTSuWXJjZgD9JPnfV/bA9IZcS26YsCIw="
+      "version": "4775d44d1aacfab7effa08293357521a3c603b87",
+      "sum": "xzW14ZUgd2nmF55s4TZMhFqqr7COqqAxCtUrpyYrLjw="
     },
     {
       "source": {
