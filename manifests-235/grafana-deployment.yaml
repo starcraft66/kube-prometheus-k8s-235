@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: grafana
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 12.1.0
+    app.kubernetes.io/version: 13.0.2
   name: grafana
   namespace: monitoring
 spec:
@@ -20,14 +20,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-config: 377685dd836fd69449f670acaad3f417
-        checksum/grafana-dashboardproviders: 4c364bf7811a4eff194596a272550ae5
-        checksum/grafana-datasources: 34dc6d0eeebe415ac38992ae3518ab8e
+        checksum/grafana-config: 0e38c60022d9bf3bac7e2507a9d8f4bf
+        checksum/grafana-dashboardproviders: e67a7f7e1db3c278d65db9ed24935a44
+        checksum/grafana-datasources: c09293e692784551064e1cae71b607f1
       labels:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 12.1.0
+        app.kubernetes.io/version: 13.0.2
     spec:
       automountServiceAccountToken: false
       containers:
@@ -35,7 +35,7 @@ spec:
         envFrom:
         - secretRef:
             name: grafana-admin-credentials
-        image: grafana/grafana:12.1.0
+        image: grafana/grafana:13.0.2
         name: grafana
         ports:
         - containerPort: 3000
@@ -178,6 +178,9 @@ spec:
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-node
           name: grafana-dashboard-k8s-resources-node
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/k8s-resources-nodes-overview
+          name: grafana-dashboard-k8s-resources-nodes-overview
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-pod
           name: grafana-dashboard-k8s-resources-pod
@@ -391,6 +394,9 @@ spec:
       - configMap:
           name: grafana-dashboard-k8s-resources-node
         name: grafana-dashboard-k8s-resources-node
+      - configMap:
+          name: grafana-dashboard-k8s-resources-nodes-overview
+        name: grafana-dashboard-k8s-resources-nodes-overview
       - configMap:
           name: grafana-dashboard-k8s-resources-pod
         name: grafana-dashboard-k8s-resources-pod
