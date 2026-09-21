@@ -4,6 +4,27 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/adinhodovic/argo-cd-mixin.git",
+          "subdir": ""
+        }
+      },
+      "version": "bd9929463f4ba38c775ac665fdbf60fd0229c01d",
+      "sum": "rnqThGd2XG8DJH50qS1KnXRdqTpgWZfFBj1lCvPLr6M="
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/adinhodovic/mixin-utils.git",
+          "subdir": ""
+        }
+      },
+      "version": "2c98391e8436d2c107ff33b089404cb23a89f5d4",
+      "sum": "4jxSuwwD1WkZKT54txHg/dZoESvuvA+J/p7dVD0v81Q=",
+      "name": "mm-utils"
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/amoghk/coredns-mixin.git",
           "subdir": ""
         }
@@ -54,6 +75,16 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/grafana/grafonnet-lib.git",
+          "subdir": "grafonnet-7.0"
+        }
+      },
+      "version": "a1d61cce1da59c71409b99b5c7568511fec661ea",
+      "sum": "gCtR9s/4D5fxU9aKXg0Bru+/njZhA0YjLjPiASc61FM="
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/grafana/grafonnet.git",
           "subdir": "gen/grafonnet-latest"
         }
@@ -85,6 +116,26 @@
       "source": {
         "git": {
           "remote": "https://github.com/grafana/jsonnet-libs.git",
+          "subdir": "cilium-enterprise-mixin"
+        }
+      },
+      "version": "10b0fbc6f6bffbf774067de9c07982bf8454a211",
+      "sum": "ysCe2gbjTar0ZF7G0koRTjeUvpasQ9heovpD4AeO1pw="
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/grafana/jsonnet-libs.git",
+          "subdir": "envoy-mixin"
+        }
+      },
+      "version": "10b0fbc6f6bffbf774067de9c07982bf8454a211",
+      "sum": "8xdt5rfZTiR9fcPiUl5P10DaUgIhtgDfdmd2WmZTL70="
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/grafana/jsonnet-libs.git",
           "subdir": "grafana-builder"
         }
       },
@@ -100,6 +151,36 @@
       },
       "version": "10b0fbc6f6bffbf774067de9c07982bf8454a211",
       "sum": "pdZBifAdc1FjwhKRZIpSF/Hi2C9P9nsExGJxgxNHGRk="
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/grafana/jsonnet-libs.git",
+          "subdir": "redis-mixin"
+        }
+      },
+      "version": "10b0fbc6f6bffbf774067de9c07982bf8454a211",
+      "sum": "MslGpIxCXLkRIBPt4upbjPNLaxRs9SbdexDYw9Qjz8c="
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/grafana/jsonnet-libs.git",
+          "subdir": "traefik-mixin"
+        }
+      },
+      "version": "10b0fbc6f6bffbf774067de9c07982bf8454a211",
+      "sum": "BK9iAR9jWKrSgYtlLdUqkD7i0IsOQKqN1ytuC3A8qIU="
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/imusmanmalik/cert-manager-mixin.git",
+          "subdir": ""
+        }
+      },
+      "version": "a5f74ad04be4ee8fc007a10a918b3c48154c7e55",
+      "sum": "i1fly+j1O7FetdsEgu8hf5cbVKiOKS5523UYLaoZCtE="
     },
     {
       "source": {

@@ -43,13 +43,13 @@ local corednsMixin = addMixin({
     _config+: {},  // mixin configuration object
   },
 });
-/*local mysqldMixin = addMixin({
+local mysqldMixin = addMixin({
   name: 'mysqld',
   mixin: (import 'mysqld-mixin/mixin.libsonnet') + {
     _config+: {},  // mixin configuration object
   },
 });
-local postgresMixin = addMixin({
+/*local postgresMixin = addMixin({
   name: 'postgres',
   mixin: (import 'postgres_mixin/mixin.libsonnet') + {
     _config+: {},  // mixin configuration object
@@ -65,6 +65,51 @@ local etcdMixin = addMixin({
   name: 'etcd',
   mixin: (import 'mixin/mixin.libsonnet') + {
     _config+: {},  // mixin configuration object
+  },
+});
+local argocdMixin = addMixin({
+  name: 'argocd',
+  mixin: (import 'argo-cd-mixin/mixin.libsonnet') + {
+    // Grafana dashboard datasource name used by the mixin.
+    _config+:: {
+      datasourceName: 'default',
+    },
+  },
+});
+local traefikMixin = addMixin({
+  name: 'traefik',
+  mixin: (import 'traefik-mixin/mixin.libsonnet') + {
+    _config+: {},  // mixin configuration object
+  },
+});
+local redisMixin = addMixin({
+  name: 'redis',
+  mixin: (import 'redis-mixin/mixin.libsonnet') + {
+    _config+:: {
+      datasource: 'default',
+    },
+  },
+});
+local ciliumMixin = addMixin({
+  name: 'cilium',
+  mixin: (import 'cilium-enterprise-mixin/mixin.libsonnet') + {
+    _config+: {},  // mixin configuration object
+  },
+});
+local envoyMixin = addMixin({
+  name: 'envoy',
+  mixin: (import 'envoy-mixin/mixin.libsonnet') + {
+    _config+: {},  // mixin configuration object
+  },
+});
+local certManagerMixin = addMixin({
+  name: 'cert-manager',
+  mixin: (import 'cert-manager-mixin/mixin.libsonnet') + {
+    _config+:: {
+      // Alert annotations link to the in-cluster Grafana. Overridden per domain below.
+      grafanaExternalUrl: 'https://monitoring.tdude.co',
+      grafanaExternalUrlEnabled: true,
+    },
   },
 });
 
@@ -217,7 +262,7 @@ local kp = function(domain)
           requests: { cpu: '150m', memory: '256Mi' },
           limits: { memory: '1Gi' },
         },
-        dashboards+: corednsMixin.grafanaDashboards /*mysqldMixin.dashboards, postgresMixin.dashboards,*/ + elasticsearchMixin.grafanaDashboards + etcdMixin.grafanaDashboards,
+        dashboards+: corednsMixin.grafanaDashboards + mysqldMixin.grafanaDashboards + elasticsearchMixin.grafanaDashboards + etcdMixin.grafanaDashboards + argocdMixin.grafanaDashboards + traefikMixin.grafanaDashboards + redisMixin.grafanaDashboards + ciliumMixin.grafanaDashboards + envoyMixin.grafanaDashboards + certManagerMixin.grafanaDashboards,
         config+: {
           sections+: {
             analytics+: {
@@ -331,8 +376,13 @@ local kp = function(domain)
         },
       },
     prometheusAlerts+:: corednsMixin.prometheusAlerts +
+      mysqldMixin.prometheusAlerts +
       elasticsearchMixin.prometheusAlerts +
-      etcdMixin.prometheusAlerts,
+      etcdMixin.prometheusAlerts +
+      argocdMixin.prometheusAlerts +
+      traefikMixin.prometheusAlerts +
+      ciliumMixin.prometheusAlerts +
+      certManagerMixin.prometheusAlerts,
     },
 
 
@@ -456,7 +506,12 @@ local manifests = function(kpd)
   //{ 'external-mixins/mysqld-mixin-prometheus-rules': mysqldMixin.prometheusRules }
   //{ 'external-mixins/postgres-mixin-prometheus-rules': postgresMixin.prometheusRules }
   { 'elasticsearch-mixin-prometheus-rules': elasticsearchMixin.prometheusRules } +
-  { 'etcd-mixin-prometheus-rules': etcdMixin.prometheusRules };
+  { 'etcd-mixin-prometheus-rules': etcdMixin.prometheusRules } +
+  { 'mysqld-mixin-prometheus-rules': mysqldMixin.prometheusRules } +
+  { 'argocd-mixin-prometheus-rules': argocdMixin.prometheusRules } +
+  { 'traefik-mixin-prometheus-rules': traefikMixin.prometheusRules } +
+  { 'cilium-mixin-prometheus-rules': ciliumMixin.prometheusRules } +
+  { 'cert-manager-mixin-prometheus-rules': certManagerMixin.prometheusRules };
 
 local kustomizationResourceFile(name) = name + '.yaml';
 local kustomization = function(kpd) {
