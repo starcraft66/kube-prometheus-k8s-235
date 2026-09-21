@@ -67,6 +67,15 @@ local mysqldMixin = addMixin({
   name: 'mysqld',
   mixin: (import 'mysqld-mixin/mixin.libsonnet') + {
     _config+: {},  // mixin configuration object
+    // We run MariaDB (via mariadb-operator) with prom/mysqld-exporter, not a
+    // Galera cluster, so the Galera alert group (wsrep_* metrics) does not
+    // apply. Keep the general MySQLdAlerts and the mysql-overview dashboard.
+    prometheusAlerts+:: {
+      groups: std.filter(
+        function(group) group.name != 'GaleraAlerts',
+        super.groups,
+      ),
+    },
   },
 });
 /*local postgresMixin = addMixin({
@@ -317,7 +326,11 @@ local kp = function(domain)
         },
       },
       alertmanager+: {
-        secrets: ['discord-webhook'],
+        // The Discord webhook is not mounted into Alertmanager: the receiver is
+        // defined in an AlertmanagerConfig CR (infra repo) which references the
+        // secret via apiURL.secretKeyRef, so the operator resolves it to a
+        // literal webhook_url. webhook_url_file is not supported by the
+        // operator's alertmanager config schema.
         config: |||
           global:
             resolve_timeout: 1m
@@ -339,7 +352,9 @@ local kp = function(domain)
             group_interval: 5m
             repeat_interval: 4h
 
-            # Default receiver.
+            # Default receiver. Notifications are delivered by an
+            # AlertmanagerConfig CR, whose routes are prepended and continue
+            # into these routes.
             receiver: 'null'
 
             # Different routes
@@ -353,14 +368,9 @@ local kp = function(domain)
             - match:
                 severity: info
               receiver: 'null'
-            - receiver: 'discord-notifications'
 
           receivers:
             - name: 'null'
-            - name: 'discord-notifications'
-              discord_configs:
-                - webhook_url_file: '/etc/alertmanager/secrets/discord-webhook/DISCORD_WEBHOOK'
-                  send_resolved: true
         |||,
       },
     },
