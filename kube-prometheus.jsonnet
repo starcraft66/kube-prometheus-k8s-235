@@ -37,6 +37,26 @@ local filterAlerts(alerts) = {
 };
 
 local addMixin = (import 'kube-prometheus/lib/mixin.libsonnet');
+
+// Dashboard keys become Kubernetes object names in the generated Grafana
+// manifests ("grafana-dashboard-" + key without extension), so they must be
+// valid RFC 1123 labels. Some upstream mixins ship keys containing uppercase
+// letters (cilium-L3-policy.json) or underscores (redis_overview), so
+// normalise every key to lowercase alphanumerics, '-' and '.'.
+local sanitizeDashboardName(name) =
+  local lower = std.asciiLower(std.strReplace(name, '_', '-'));
+  local invalid = std.join('', [
+    c
+    for c in std.stringChars(lower)
+    if !std.member(['_', '.', '-'], c) && !(c >= 'a' && c <= 'z') && !(c >= '0' && c <= '9')
+  ]);
+  if invalid == '' then lower else std.strReplace(lower, invalid, '-');
+
+local sanitizeDashboards(dashboards) = {
+  [sanitizeDashboardName(name)]: dashboards[name]
+  for name in std.objectFields(dashboards)
+};
+
 local corednsMixin = addMixin({
   name: 'coredns',
   mixin: (import 'coredns-mixin/mixin.libsonnet') + {
@@ -262,7 +282,7 @@ local kp = function(domain)
           requests: { cpu: '150m', memory: '256Mi' },
           limits: { memory: '1Gi' },
         },
-        dashboards+: corednsMixin.grafanaDashboards + mysqldMixin.grafanaDashboards + elasticsearchMixin.grafanaDashboards + etcdMixin.grafanaDashboards + argocdMixin.grafanaDashboards + traefikMixin.grafanaDashboards + redisMixin.grafanaDashboards + ciliumMixin.grafanaDashboards + envoyMixin.grafanaDashboards + certManagerMixin.grafanaDashboards,
+        dashboards+: sanitizeDashboards(corednsMixin.grafanaDashboards + mysqldMixin.grafanaDashboards + elasticsearchMixin.grafanaDashboards + etcdMixin.grafanaDashboards + argocdMixin.grafanaDashboards + traefikMixin.grafanaDashboards + redisMixin.grafanaDashboards + ciliumMixin.grafanaDashboards + envoyMixin.grafanaDashboards + certManagerMixin.grafanaDashboards),
         config+: {
           sections+: {
             analytics+: {
