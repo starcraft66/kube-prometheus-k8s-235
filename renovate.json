@@ -1,3 +1,27 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "description": "kube-prometheus upstream asks consumers to follow the release-* branches; the vX.Y.Z tags only exist to notify users about a new release. Disable the native jsonnet-bundler (git-tags) handling for this single dependency so the custom regex manager below can track the branch instead.",
+      "matchManagers": ["jsonnet-bundler"],
+      "matchPackageNames": ["github.com/prometheus-operator/kube-prometheus"],
+      "enabled": false
+    }
+  ],
+  "customManagers": [
+    {
+      "description": "Track the kube-prometheus jsonnet-bundler dependency against the release-* branch (e.g. release-0.18, release-0.19, ...) rather than its release tags.",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^jsonnetfile\\.json$/"
+      ],
+      "matchStrings": [
+        "\"remote\": \"(?<registryUrl>https://github\\.com/prometheus-operator/kube-prometheus\\.git)\",\\s*\"subdir\": \"jsonnet/kube-prometheus\"\\s*}\\s*},\\s*\"version\": \"(?<currentValue>release-\\d+\\.\\d+)\""
+      ],
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "github.com/prometheus-operator/kube-prometheus",
+      "versioningTemplate": "regex:^release-(?<major>\\d+)\\.(?<minor>\\d+)$",
+      "autoReplaceStringTemplate": "\"remote\": \"{{{registryUrl}}}\",\n          \"subdir\": \"jsonnet/kube-prometheus\"\n        }\n      },\n      \"version\": \"{{{newValue}}}\""
+    }
+  ]
 }
