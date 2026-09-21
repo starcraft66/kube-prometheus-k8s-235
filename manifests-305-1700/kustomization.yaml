@@ -2,9 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - alertmanager-alertmanager.yaml
-- alertmanager-discord-deployment.yaml
-- alertmanager-discord-networkPolicy.yaml
-- alertmanager-discord-service.yaml
 - alertmanager-networkPolicy.yaml
 - alertmanager-podDisruptionBudget.yaml
 - alertmanager-prometheusRule.yaml

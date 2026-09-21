@@ -28,7 +28,8 @@ spec:
     requests:
       cpu: 4m
       memory: 100Mi
-  secrets: []
+  secrets:
+  - discord-webhook
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true
