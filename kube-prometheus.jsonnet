@@ -36,114 +36,6 @@ local filterAlerts(alerts) = {
   },
 };
 
-local alertmanagerDiscord = {
-  deployment: {
-    kind: 'Deployment',
-    apiVersion: 'apps/v1',
-    metadata: {
-      name: 'alertmanager-discord',
-      namespace: 'monitoring',
-    },
-    spec: {
-      replicas: 2,
-      selector: {
-        matchLabels: {
-          'app.kubernetes.io/name': 'alertmanager-discord',
-        },
-      },
-      template: {
-        metadata: {
-          labels: {
-            'app.kubernetes.io/name': 'alertmanager-discord',
-          },
-        },
-        spec: {
-          containers: [
-            {
-              name: 'alertmanager-discord',
-              image: 'benjojo/alertmanager-discord:latest',
-              ports: [{
-                name: 'web',
-                containerPort: 9094,
-              }],
-              env: [{
-                name: 'DISCORD_WEBHOOK',
-                valueFrom: {
-                  secretKeyRef: {
-                    name: 'discord-webhook',
-                    key: 'DISCORD_WEBHOOK',
-                  },
-                },
-              }],
-              resources: {
-                requests: {
-                  cpu: '50m',
-                },
-                limits: {
-                  cpu: '100m',
-                },
-              },
-            },
-          ],
-        },
-      },
-    },
-  },
-  service: {
-    apiVersion: 'v1',
-    kind: 'Service',
-    metadata: {
-      name: 'alertmanager-discord',
-      namespace: 'monitoring',
-    },
-    spec: {
-      ports: [
-        { name: 'web', targetPort: 'web', port: 9094 },
-      ],
-      selector: {
-        'app.kubernetes.io/name': 'alertmanager-discord',
-      },
-    },
-  },
-  networkPolicy: {
-    apiVersion: 'networking.k8s.io/v1',
-    kind: 'NetworkPolicy',
-    metadata: {
-      name: 'alertmanager-discord',
-      namespace: 'monitoring',
-    },
-    spec: {
-      podSelector: {
-        matchLabels: {
-          'app.kubernetes.io/name': 'alertmanager-discord',
-        },
-      },
-      policyTypes: [
-        'Ingress',
-      ],
-      ingress: [
-        {
-          from: [
-            {
-              podSelector: {
-                matchLabels: {
-                  'app.kubernetes.io/name': 'alertmanager',
-                },
-              },
-            },
-          ],
-          ports: [
-            {
-              protocol: 'TCP',
-              port: 9094,
-            },
-          ],
-        },
-      ],
-    },
-  },
-};
-
 local addMixin = (import 'kube-prometheus/lib/mixin.libsonnet');
 local corednsMixin = addMixin({
   name: 'coredns',
@@ -360,6 +252,7 @@ local kp = function(domain)
         },
       },
       alertmanager+: {
+        secrets: ['discord-webhook'],
         config: |||
           global:
             resolve_timeout: 1m
@@ -400,8 +293,9 @@ local kp = function(domain)
           receivers:
             - name: 'null'
             - name: 'discord-notifications'
-              webhook_configs:
-                - url: 'http://alertmanager-discord:9094'
+              discord_configs:
+                - webhook_url_file: '/etc/alertmanager/secrets/discord-webhook/DISCORD_WEBHOOK'
+                  send_resolved: true
         |||,
       },
     },
@@ -558,7 +452,6 @@ local manifests = function(kpd)
   { ['node-exporter-' + name]: kpd.nodeExporter[name] for name in std.objectFields(kpd.nodeExporter) } +
   { ['prometheus-' + name]: kpd.prometheus[name] for name in std.objectFields(kpd.prometheus) } +
   { ['prometheus-adapter-' + name]: kpd.prometheusAdapter[name] for name in std.objectFields(kpd.prometheusAdapter) } +
-  { ['alertmanager-discord-' + name]: alertmanagerDiscord[name] for name in std.objectFields(alertmanagerDiscord) } +
   { [name + '-ingress']: kpd.ingress[name] for name in std.objectFields(kpd.ingress) } +
   //{ 'external-mixins/mysqld-mixin-prometheus-rules': mysqldMixin.prometheusRules }
   //{ 'external-mixins/postgres-mixin-prometheus-rules': postgresMixin.prometheusRules }
