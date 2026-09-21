@@ -9,6 +9,7 @@ resources:
 - alertmanager-service.yaml
 - alertmanager-serviceAccount.yaml
 - alertmanager-serviceMonitor.yaml
+- argocd-mixin-prometheus-rules.yaml
 - backend-ingress.yaml
 - blackbox-exporter-clusterRole.yaml
 - blackbox-exporter-clusterRoleBinding.yaml
@@ -18,6 +19,8 @@ resources:
 - blackbox-exporter-service.yaml
 - blackbox-exporter-serviceAccount.yaml
 - blackbox-exporter-serviceMonitor.yaml
+- cert-manager-mixin-prometheus-rules.yaml
+- cilium-mixin-prometheus-rules.yaml
 - elasticsearch-mixin-prometheus-rules.yaml
 - etcd-mixin-prometheus-rules.yaml
 - grafana-config.yaml
@@ -47,6 +50,7 @@ resources:
 - kubernetes-serviceMonitorKubeControllerManager.yaml
 - kubernetes-serviceMonitorKubeScheduler.yaml
 - kubernetes-serviceMonitorKubelet.yaml
+- mysqld-mixin-prometheus-rules.yaml
 - node-exporter-clusterRole.yaml
 - node-exporter-clusterRoleBinding.yaml
 - node-exporter-daemonset.yaml
@@ -122,3 +126,4 @@ resources:
 - setup/prometheus-operator-service.yaml
 - setup/prometheus-operator-serviceAccount.yaml
 - setup/pyrra-slo-CustomResourceDefinition.yaml
+- traefik-mixin-prometheus-rules.yaml

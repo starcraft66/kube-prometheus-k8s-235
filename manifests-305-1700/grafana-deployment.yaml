@@ -77,6 +77,72 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/apiserver
           name: grafana-dashboard-apiserver
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/argo-cd-application-overview
+          name: grafana-dashboard-argo-cd-application-overview
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/argo-cd-notifications-overview
+          name: grafana-dashboard-argo-cd-notifications-overview
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/argo-cd-operational-overview
+          name: grafana-dashboard-argo-cd-operational-overview
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cert-manager-overview
+          name: grafana-dashboard-cert-manager-overview
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-L3-policy
+          name: grafana-dashboard-cilium-L3-policy
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-L7-proxy
+          name: grafana-dashboard-cilium-L7-proxy
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-agent-overview
+          name: grafana-dashboard-cilium-agent-overview
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-agent
+          name: grafana-dashboard-cilium-agent
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-api
+          name: grafana-dashboard-cilium-api
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-bpf
+          name: grafana-dashboard-cilium-bpf
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-conntrack
+          name: grafana-dashboard-cilium-conntrack
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-datapath
+          name: grafana-dashboard-cilium-datapath
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-external-fqdn-proxy
+          name: grafana-dashboard-cilium-external-fqdn-proxy
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-fqdn-proxy
+          name: grafana-dashboard-cilium-fqdn-proxy
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-identities
+          name: grafana-dashboard-cilium-identities
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-kubernetes
+          name: grafana-dashboard-cilium-kubernetes
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-network
+          name: grafana-dashboard-cilium-network
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-nodes
+          name: grafana-dashboard-cilium-nodes
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-operator
+          name: grafana-dashboard-cilium-operator
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-overview
+          name: grafana-dashboard-cilium-overview
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-policy
+          name: grafana-dashboard-cilium-policy
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-resource-utilization
+          name: grafana-dashboard-cilium-resource-utilization
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/cluster-total
           name: grafana-dashboard-cluster-total
           readOnly: false
@@ -86,11 +152,20 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/coredns
           name: grafana-dashboard-coredns
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/envoy-overview
+          name: grafana-dashboard-envoy-overview
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/etcd
           name: grafana-dashboard-etcd
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/grafana-overview
           name: grafana-dashboard-grafana-overview
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/hubble-overview
+          name: grafana-dashboard-hubble-overview
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/hubble-timescape
+          name: grafana-dashboard-hubble-timescape
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-cluster
           name: grafana-dashboard-k8s-resources-cluster
@@ -134,6 +209,9 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/logging-elasticsearch
           name: grafana-dashboard-logging-elasticsearch
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/mysql-overview
+          name: grafana-dashboard-mysql-overview
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/namespace-by-pod
           name: grafana-dashboard-namespace-by-pod
           readOnly: false
@@ -170,8 +248,14 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/proxy
           name: grafana-dashboard-proxy
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/redis_overview
+          name: grafana-dashboard-redis_overview
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/scheduler
           name: grafana-dashboard-scheduler
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/traefikdash
+          name: grafana-dashboard-traefikdash
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/workload-total
           name: grafana-dashboard-workload-total
@@ -206,6 +290,72 @@ spec:
           name: grafana-dashboard-apiserver
         name: grafana-dashboard-apiserver
       - configMap:
+          name: grafana-dashboard-argo-cd-application-overview
+        name: grafana-dashboard-argo-cd-application-overview
+      - configMap:
+          name: grafana-dashboard-argo-cd-notifications-overview
+        name: grafana-dashboard-argo-cd-notifications-overview
+      - configMap:
+          name: grafana-dashboard-argo-cd-operational-overview
+        name: grafana-dashboard-argo-cd-operational-overview
+      - configMap:
+          name: grafana-dashboard-cert-manager-overview
+        name: grafana-dashboard-cert-manager-overview
+      - configMap:
+          name: grafana-dashboard-cilium-L3-policy
+        name: grafana-dashboard-cilium-L3-policy
+      - configMap:
+          name: grafana-dashboard-cilium-L7-proxy
+        name: grafana-dashboard-cilium-L7-proxy
+      - configMap:
+          name: grafana-dashboard-cilium-agent-overview
+        name: grafana-dashboard-cilium-agent-overview
+      - configMap:
+          name: grafana-dashboard-cilium-agent
+        name: grafana-dashboard-cilium-agent
+      - configMap:
+          name: grafana-dashboard-cilium-api
+        name: grafana-dashboard-cilium-api
+      - configMap:
+          name: grafana-dashboard-cilium-bpf
+        name: grafana-dashboard-cilium-bpf
+      - configMap:
+          name: grafana-dashboard-cilium-conntrack
+        name: grafana-dashboard-cilium-conntrack
+      - configMap:
+          name: grafana-dashboard-cilium-datapath
+        name: grafana-dashboard-cilium-datapath
+      - configMap:
+          name: grafana-dashboard-cilium-external-fqdn-proxy
+        name: grafana-dashboard-cilium-external-fqdn-proxy
+      - configMap:
+          name: grafana-dashboard-cilium-fqdn-proxy
+        name: grafana-dashboard-cilium-fqdn-proxy
+      - configMap:
+          name: grafana-dashboard-cilium-identities
+        name: grafana-dashboard-cilium-identities
+      - configMap:
+          name: grafana-dashboard-cilium-kubernetes
+        name: grafana-dashboard-cilium-kubernetes
+      - configMap:
+          name: grafana-dashboard-cilium-network
+        name: grafana-dashboard-cilium-network
+      - configMap:
+          name: grafana-dashboard-cilium-nodes
+        name: grafana-dashboard-cilium-nodes
+      - configMap:
+          name: grafana-dashboard-cilium-operator
+        name: grafana-dashboard-cilium-operator
+      - configMap:
+          name: grafana-dashboard-cilium-overview
+        name: grafana-dashboard-cilium-overview
+      - configMap:
+          name: grafana-dashboard-cilium-policy
+        name: grafana-dashboard-cilium-policy
+      - configMap:
+          name: grafana-dashboard-cilium-resource-utilization
+        name: grafana-dashboard-cilium-resource-utilization
+      - configMap:
           name: grafana-dashboard-cluster-total
         name: grafana-dashboard-cluster-total
       - configMap:
@@ -215,11 +365,20 @@ spec:
           name: grafana-dashboard-coredns
         name: grafana-dashboard-coredns
       - configMap:
+          name: grafana-dashboard-envoy-overview
+        name: grafana-dashboard-envoy-overview
+      - configMap:
           name: grafana-dashboard-etcd
         name: grafana-dashboard-etcd
       - configMap:
           name: grafana-dashboard-grafana-overview
         name: grafana-dashboard-grafana-overview
+      - configMap:
+          name: grafana-dashboard-hubble-overview
+        name: grafana-dashboard-hubble-overview
+      - configMap:
+          name: grafana-dashboard-hubble-timescape
+        name: grafana-dashboard-hubble-timescape
       - configMap:
           name: grafana-dashboard-k8s-resources-cluster
         name: grafana-dashboard-k8s-resources-cluster
@@ -263,6 +422,9 @@ spec:
           name: grafana-dashboard-logging-elasticsearch
         name: grafana-dashboard-logging-elasticsearch
       - configMap:
+          name: grafana-dashboard-mysql-overview
+        name: grafana-dashboard-mysql-overview
+      - configMap:
           name: grafana-dashboard-namespace-by-pod
         name: grafana-dashboard-namespace-by-pod
       - configMap:
@@ -299,8 +461,14 @@ spec:
           name: grafana-dashboard-proxy
         name: grafana-dashboard-proxy
       - configMap:
+          name: grafana-dashboard-redis_overview
+        name: grafana-dashboard-redis_overview
+      - configMap:
           name: grafana-dashboard-scheduler
         name: grafana-dashboard-scheduler
+      - configMap:
+          name: grafana-dashboard-traefikdash
+        name: grafana-dashboard-traefikdash
       - configMap:
           name: grafana-dashboard-workload-total
         name: grafana-dashboard-workload-total
