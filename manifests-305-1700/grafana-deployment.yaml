@@ -89,12 +89,6 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/cert-manager-overview
           name: grafana-dashboard-cert-manager-overview
           readOnly: false
-        - mountPath: /grafana-dashboard-definitions/0/cilium-L3-policy
-          name: grafana-dashboard-cilium-L3-policy
-          readOnly: false
-        - mountPath: /grafana-dashboard-definitions/0/cilium-L7-proxy
-          name: grafana-dashboard-cilium-L7-proxy
-          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/cilium-agent-overview
           name: grafana-dashboard-cilium-agent-overview
           readOnly: false
@@ -124,6 +118,12 @@ spec:
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/cilium-kubernetes
           name: grafana-dashboard-cilium-kubernetes
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-l3-policy
+          name: grafana-dashboard-cilium-l3-policy
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cilium-l7-proxy
+          name: grafana-dashboard-cilium-l7-proxy
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/cilium-network
           name: grafana-dashboard-cilium-network
@@ -251,8 +251,8 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/proxy
           name: grafana-dashboard-proxy
           readOnly: false
-        - mountPath: /grafana-dashboard-definitions/0/redis_overview
-          name: grafana-dashboard-redis_overview
+        - mountPath: /grafana-dashboard-definitions/0/redis-overview
+          name: grafana-dashboard-redis-overview
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/scheduler
           name: grafana-dashboard-scheduler
@@ -305,12 +305,6 @@ spec:
           name: grafana-dashboard-cert-manager-overview
         name: grafana-dashboard-cert-manager-overview
       - configMap:
-          name: grafana-dashboard-cilium-L3-policy
-        name: grafana-dashboard-cilium-L3-policy
-      - configMap:
-          name: grafana-dashboard-cilium-L7-proxy
-        name: grafana-dashboard-cilium-L7-proxy
-      - configMap:
           name: grafana-dashboard-cilium-agent-overview
         name: grafana-dashboard-cilium-agent-overview
       - configMap:
@@ -340,6 +334,12 @@ spec:
       - configMap:
           name: grafana-dashboard-cilium-kubernetes
         name: grafana-dashboard-cilium-kubernetes
+      - configMap:
+          name: grafana-dashboard-cilium-l3-policy
+        name: grafana-dashboard-cilium-l3-policy
+      - configMap:
+          name: grafana-dashboard-cilium-l7-proxy
+        name: grafana-dashboard-cilium-l7-proxy
       - configMap:
           name: grafana-dashboard-cilium-network
         name: grafana-dashboard-cilium-network
@@ -467,8 +467,8 @@ spec:
           name: grafana-dashboard-proxy
         name: grafana-dashboard-proxy
       - configMap:
-          name: grafana-dashboard-redis_overview
-        name: grafana-dashboard-redis_overview
+          name: grafana-dashboard-redis-overview
+        name: grafana-dashboard-redis-overview
       - configMap:
           name: grafana-dashboard-scheduler
         name: grafana-dashboard-scheduler
