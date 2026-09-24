@@ -35,7 +35,7 @@
           "subdir": "jsonnet/kube-prometheus"
         }
       },
-      "version": "release-0.18"
+      "version": "v0.19.0"
     },
     {
       "source": {
